@@ -1,0 +1,52 @@
+<form [formGroup]="transactionForm" (ngSubmit)="addNewTransaction()">
+    <mat-form-field>
+      <mat-label>Nazwa kryptowaluty</mat-label>
+      <input matInput formControlName="cryptoName" placeholder="Wprowadź nazwę kryptowaluty"> 
+      <mat-error>Podaj nazwę kryptowaluty</mat-error>   
+    </mat-form-field>  
+    <mat-form-field>
+        <mat-label>Cena USD</mat-label>
+        <input matInput formControlName="priceUSD" type="number" placeholder="Cena w USD"> 
+        <mat-error>Podaj cenę w USD</mat-error>   
+      </mat-form-field>  
+      <mat-form-field>
+        <mat-label>Zakupiona ilość</mat-label>
+        <input matInput formControlName="amount" type="number" placeholder="Zakupiona ilość"> 
+        <mat-error>Podaj zakupioną ilość</mat-error>   
+      </mat-form-field>  
+      <mat-form-field>
+        <mat-label>Pełna kwota zakupu</mat-label>
+        <input matInput formControlName="fullUSDPrice" type="number" placeholder="Pełna kwota"> 
+        <mat-error>Podaj pełną kwotę</mat-error>   
+      </mat-form-field>  
+ 
+
+      <mat-form-field>
+        <mat-label>Rodzaj transakcji</mat-label>
+        <select matNativeControl required formControlName="transactionKind">
+          <option *ngFor=" let option of availableOptions" [ngValue]="option">{{option == 1 ? 'Kupno' : 'Sprzedaż'}}</option>
+        </select>
+      </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Zapisz</button>
+  </form>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col.column">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ col.columnName }} </th>
+        <td mat-cell *matCellDef="let element"> {{ element[col.column] }} </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="getColumnNames()"></tr>
+    <tr mat-row *matRowDef="let row; columns: getColumnNames();"></tr>
+  </table>
+
+<div class="dropzone" appUploadFile (filesChangeEmiter)="onFileChange($event)">
+  <div class="text-wrapper">
+    <div class="centered">
+      Przeciągnij tutaj plik <br> <span>lub</span>
+      <button class="upload-button">
+        Wybierz plik z dysku
+        <input type="file" name="file" id="file" (change)="onFileChange($any($event.target).files)" multiple>
+      </button>
+    </div>
+  </div>
+</div>
