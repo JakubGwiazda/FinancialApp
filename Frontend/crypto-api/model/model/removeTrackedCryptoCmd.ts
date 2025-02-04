@@ -11,9 +11,7 @@
  */
 
 
-export interface GetTrackedCryptoResponse { 
+export interface RemoveTrackedCryptoCmd { 
     id?: number;
-    cryptoCurrencySymbol?: string | null;
-    fiatCurrencySymbol?: string | null;
 }
 

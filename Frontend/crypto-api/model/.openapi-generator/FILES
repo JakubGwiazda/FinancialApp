@@ -18,6 +18,7 @@ model/iError.ts
 model/iReason.ts
 model/iSuccess.ts
 model/models.ts
+model/removeTrackedCryptoCmd.ts
 model/result.ts
 model/setAppSettingCmd.ts
 model/settingValueType.ts

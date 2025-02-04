@@ -7,6 +7,7 @@ namespace FinancialApp.Application.Queries
 {
     public class GetTrackedCryptoResponse
     {
+        public int Id { get; set; }
         public string CryptoCurrencySymbol { get; set; }
         public string FiatCurrencySymbol { get; set; }
     }
@@ -29,6 +30,7 @@ namespace FinancialApp.Application.Queries
 
             var results = data.Select(p => new GetTrackedCryptoResponse() 
             {
+                Id = p.Id,
                 CryptoCurrencySymbol = p.CryptoCurrencySymbol,
                 FiatCurrencySymbol = p.FiatCurrencySymbol
             }).ToList();

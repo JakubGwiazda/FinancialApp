@@ -32,14 +32,27 @@ namespace FinancialApp.Infrastructure.Repositories
             }
         }
 
-        public Task<Result> DeleteRecord<T>(T data) where T : class
+        public async Task DeleteRecord<T>(T data) where T : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                _baseContext.Set<T>().Remove(data);
+                await _baseContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<T>> GetAllRecords<T>() where T : class
         {
             return await _baseContext.Set<T>().ToListAsync();
+        }
+
+        public async Task<T> GetRecord<T>(int id) where T : class
+        {
+            return await _baseContext.Set<T>().FindAsync(id);
         }
     }
 }

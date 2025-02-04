@@ -8,9 +8,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GetAppSettingsResponse, GetTrackedCryptoResponse, SettingsService, TrackNewCryptoCmd } from 'crypto-api/model';
+import {
+  GetAppSettingsResponse,
+  GetTrackedCryptoResponse,
+  RemoveTrackedCryptoCmd,
+  SettingsService,
+  TrackNewCryptoCmd,
+} from 'crypto-api/model';
 import { Observable, pipe, switchMap } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { DynamicTableComponent } from '../common/components/dynamic-table/dynamic-table.component';
+import { ITableDefinition, IColumnDefinition } from '../common/interfaces/IColumnConfig';
 
 @Component({
   selector: 'settings',
@@ -19,14 +27,49 @@ import { MatTableDataSource } from '@angular/material/table';
   standalone: false,
 })
 export class SettingsComponent implements OnInit {
-  displayedColumns: string[] = ['cryptoSymbol', 'currency'];
-  displayedSettingsColumns: string[] = ['name', 'value'];
+    settingsTableColumns : IColumnDefinition[] = [{
+      columnDef:'name',
+      header: 'Name', 
+      width: '50px',
+      cell: (item: GetAppSettingsResponse) => `${item?.name}`
+    },
+    {
+      columnDef:'value',
+      header: 'Settings value',
+      width: '50px',
+      cell: (item: GetAppSettingsResponse) => `${item?.value}`
+    }];
 
-  dataSource: MatTableDataSource<GetTrackedCryptoResponse> = new MatTableDataSource<GetTrackedCryptoResponse>();
-  dataSettingsSource: MatTableDataSource<GetAppSettingsResponse> = new MatTableDataSource<GetAppSettingsResponse>();
+   trackedCryptoTableColumns : IColumnDefinition[] = [{
+      columnDef:'name',
+      header: 'Name', 
+      cell: (item: GetTrackedCryptoResponse) => `${item?.cryptoCurrencySymbol}`
+    },    
+    {
+      columnDef:'currency',
+      header: 'Currency',
+      cell: (item: GetTrackedCryptoResponse) => `${item?.fiatCurrencySymbol}`
+    },
+    {
+      columnDef:'action',
+      header: 'Action',
+      action: (item: GetTrackedCryptoResponse) => console.log(item)
+    },
+  ];
+
+  trackedCryptoTable: ITableDefinition = {
+    columns: this.trackedCryptoTableColumns,
+    dataSource: [],
+    displayedColumns: this.trackedCryptoTableColumns.map(p => p.columnDef)
+  }
+
+  settingsTable: ITableDefinition = {
+    columns: this.settingsTableColumns,
+    dataSource: [],
+    displayedColumns: this.settingsTableColumns.map(p => p.columnDef)
+  }
 
   constructor(private settingsService: SettingsService) {}
-
 
   cryptoSettings = new FormGroup({
     cryptoSymbol: new FormControl('', Validators.required),
@@ -34,11 +77,29 @@ export class SettingsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.settingsService.getSettings().subscribe(res => {
+    this.settingsService.getSettings().subscribe((res) => {
       if (res && res.value) {
-        this.dataSettingsSource.data = [...res.value];
+        this.settingsTable.dataSource = res.value.map(p => ({
+          name: p.name,
+          value: p.value,
+        })) as []; 
       }
-    })
+    });
+
+    this.settingsService.getTrackerPairs().subscribe((res) => {
+      if (res && res.value) {         
+        this.trackedCryptoTable.dataSource = res.value.map(p => ({
+          id: p.id,
+          cryptoCurrencySymbol: p.cryptoCurrencySymbol,
+          fiatCurrencySymbol: p.fiatCurrencySymbol,
+        })) as [];
+      }
+      this.cryptoSettings.reset();
+    });
+  }
+
+  handleAction(item: GetTrackedCryptoResponse) {
+    this.removeTrackedPair(item);
   }
 
   onSubmit() {
@@ -53,17 +114,33 @@ export class SettingsComponent implements OnInit {
           return this.settingsService.getTrackerPairs();
         })
       )
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res && res.value) {
-          this.dataSource.data = [...res.value];
+          this.trackedCryptoTable.dataSource = res.value.map(p => ({
+            id: p.id,
+            cryptoCurrencySymbol: p.cryptoCurrencySymbol,
+            fiatCurrencySymbol: p.fiatCurrencySymbol,
+          })) as [];
         }
-        this.cryptoSettings.reset(); 
+        this.cryptoSettings.reset();
       });
-      
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  removeTrackedPair(item: GetTrackedCryptoResponse){
+    this.settingsService.removeTracker({id: item.id})
+    .pipe(
+      switchMap(res => {
+        return this.settingsService.getTrackerPairs();
+      })
+    ).subscribe((res) => {
+      if (res && res.value) {
+        this.trackedCryptoTable.dataSource = res.value.map(p => ({
+          id: p.id,
+          cryptoCurrencySymbol: p.cryptoCurrencySymbol,
+          fiatCurrencySymbol: p.fiatCurrencySymbol,
+        })) as [];
+      }
+      this.cryptoSettings.reset();
+    });
   }
 }

@@ -11,46 +11,6 @@
       </mat-form-field>
       <button mat-flat-button color="primary" type="submit" [disabled]="cryptoSettings.invalid">Add tracker</button>
   </form>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-  </mat-form-field>
-  
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="cryptoSymbol">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.cryptoCurrencySymbol}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="currency">
-      <th mat-header-cell *matHeaderCellDef> Currency </th>
-      <td mat-cell *matCellDef="let element"> {{element.fiatCurrencySymbol}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-    </tr>
-  </table>
-  
-  <table mat-table [dataSource]="dataSettingsSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="value">
-      <th mat-header-cell *matHeaderCellDef> Settings value </th>
-      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedSettingsColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedSettingsColumns;"></tr>
-  
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-    </tr>
-  </table>
-  
+    
+  <app-dynamic-table [tableData]="trackedCryptoTable" (itemAction)="handleAction($event)"></app-dynamic-table>
+  <app-dynamic-table [tableData]="settingsTable"></app-dynamic-table>

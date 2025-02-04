@@ -45,5 +45,13 @@ namespace FinancialApp.Controllers
         {
             return await Mediator.Send(new GetAppSettingsQuery());
         }
+
+        [HttpPost("remove-tracker", Name = "remove-tracker")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "Tracker has been removed")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
+        public async Task<Result> SetSetting(RemoveTrackedCryptoCmd cmd)
+        {
+            return await Mediator.Send(cmd);
+        }
     }
 }

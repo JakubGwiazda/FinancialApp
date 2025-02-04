@@ -21,6 +21,8 @@ import { TableSortingExampleComponent } from './table-sorting-example/table-sort
 import { UploadFileDirective } from './common/directives/upload-file.directive';
 import { SettingsComponent } from './app-settings/settings.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DynamicTableComponent } from './common/components/dynamic-table/dynamic-table.component';
+
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
     basePath: 'https://localhost:7054'
@@ -37,6 +39,7 @@ export function apiConfigFactory (): Configuration {
         TableSortingExampleComponent,
         UploadFileDirective,
         SettingsComponent,
+        DynamicTableComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
