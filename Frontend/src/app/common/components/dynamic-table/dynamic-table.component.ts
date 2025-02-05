@@ -33,9 +33,9 @@ import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig'
 
 export class DynamicTableComponent<T>{
   @Input() tableData!: ITableDefinition;
-  @Output() itemAction = new EventEmitter<{ item: T, operationKind: OperationKind }>();
+  @Output() itemAction = new EventEmitter<{ item: T, operationKind: OperationKind, dataType: string }>();
 
   onActionClick(item: T, operationKind: OperationKind) {
-    this.itemAction.emit({item, operationKind})
+    this.itemAction.emit({item, operationKind, dataType: this.tableData.dataType})
   }
 }

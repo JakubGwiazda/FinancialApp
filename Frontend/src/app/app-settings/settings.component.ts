@@ -19,6 +19,8 @@ import { Observable, pipe, switchMap } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { DynamicTableComponent } from '../common/components/dynamic-table/dynamic-table.component';
 import { ITableDefinition, IColumnDefinition, OperationKind } from '../common/interfaces/IColumnConfig';
+import { EditModalComponent } from '../common/components/edit-modal/edit-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'settings',
@@ -31,28 +33,33 @@ export class SettingsComponent implements OnInit {
       columnDef:'name',
       header: 'Name', 
       width: '50px',
+      editable: false,
       cell: (item: GetAppSettingsResponse) => `${item?.name}`
     },
     {
       columnDef:'value',
       header: 'Settings value',
       width: '50px',
+      editable: true,
       cell: (item: GetAppSettingsResponse) => `${item?.value}`
     }];
 
    trackedCryptoTableColumns : IColumnDefinition[] = [{
       columnDef:'name',
       header: 'Name', 
+      editable: true,
       cell: (item: GetTrackedCryptoResponse) => `${item?.cryptoCurrencySymbol}`
     },    
     {
       columnDef:'currency',
       header: 'Currency',
+      editable: true,
       cell: (item: GetTrackedCryptoResponse) => `${item?.fiatCurrencySymbol}`
     },
     {
       columnDef:'action',
       header: 'Action',
+      editable: false,
       actions:[
         {
           label:'Delete',
@@ -69,16 +76,18 @@ export class SettingsComponent implements OnInit {
   trackedCryptoTable: ITableDefinition = {
     columns: this.trackedCryptoTableColumns,
     dataSource: [],
-    displayedColumns: this.trackedCryptoTableColumns.map(p => p.columnDef)
+    displayedColumns: this.trackedCryptoTableColumns.map(p => p.columnDef),
+    dataType: 'TrackedCrypto'
   }
 
   settingsTable: ITableDefinition = {
     columns: this.settingsTableColumns,
     dataSource: [],
-    displayedColumns: this.settingsTableColumns.map(p => p.columnDef)
+    displayedColumns: this.settingsTableColumns.map(p => p.columnDef),
+    dataType: 'AppSettings'
   }
 
-  constructor(private settingsService: SettingsService) {}
+  constructor(private settingsService: SettingsService, public dialog: MatDialog) {}
 
   cryptoSettings = new FormGroup({
     cryptoSymbol: new FormControl('', Validators.required),
@@ -89,8 +98,10 @@ export class SettingsComponent implements OnInit {
     this.settingsService.getSettings().subscribe((res) => {
       if (res && res.value) {
         this.settingsTable.dataSource = res.value.map(p => ({
+          id: p.id,
           name: p.name,
           value: p.value,
+          valueType: p.valueType
         })) as []; 
       }
     });
@@ -107,15 +118,31 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  handleAction(event: { item: any, operationKind: OperationKind }) {
+  handleAction(event: { item: any, operationKind: OperationKind, dataType: string }) {
     switch (event.operationKind)
     {
       case OperationKind.Update:
-        console.log('Update')
+        if(event.dataType === 'TrackedCrypto'){
+          this.openTrackedCryptoEditDialog(event.item)
+        }
         break;
       case OperationKind.Remove:
         this.removeTrackedPair(event.item);
     }
+  }
+
+  openTrackedCryptoEditDialog(item: any): void {
+  
+    const dialogRef = this.dialog.open(EditModalComponent, {
+      
+      data: {item: item}
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     console.log('Updated Row:', result);
+    //   }
+    // });
   }
 
   onSubmit() {

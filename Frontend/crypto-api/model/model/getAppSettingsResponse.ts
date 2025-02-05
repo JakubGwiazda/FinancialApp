@@ -13,6 +13,7 @@ import { SettingValueType } from './settingValueType';
 
 
 export interface GetAppSettingsResponse { 
+    id?: number;
     name?: string | null;
     value?: string | null;
     valueType?: SettingValueType;

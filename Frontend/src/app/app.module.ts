@@ -22,6 +22,8 @@ import { UploadFileDirective } from './common/directives/upload-file.directive';
 import { SettingsComponent } from './app-settings/settings.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DynamicTableComponent } from './common/components/dynamic-table/dynamic-table.component';
+import { EditModalComponent } from './common/components/edit-modal/edit-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
@@ -39,7 +41,8 @@ export function apiConfigFactory (): Configuration {
         TableSortingExampleComponent,
         UploadFileDirective,
         SettingsComponent,
-        DynamicTableComponent
+        DynamicTableComponent,
+        EditModalComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -59,6 +62,7 @@ export function apiConfigFactory (): Configuration {
         MatFormFieldModule,
         MatInputModule,
         MatHint,
+        MatDialogModule,
       ],
     providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

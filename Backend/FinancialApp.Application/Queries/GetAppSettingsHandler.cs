@@ -7,6 +7,7 @@ namespace FinancialApp.Application.Queries
 {
     public class GetAppSettingsResponse
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
         public SettingValueType ValueType { get; set; }
@@ -29,6 +30,7 @@ namespace FinancialApp.Application.Queries
 
             return data.Select(p => new GetAppSettingsResponse()
             {
+                Id = p.Id,
                 Name = p.Name,
                 Value = p.Value,
                 ValueType = p.ValueType
