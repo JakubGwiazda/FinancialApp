@@ -18,7 +18,7 @@ import {
 import { Observable, pipe, switchMap } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { DynamicTableComponent } from '../common/components/dynamic-table/dynamic-table.component';
-import { ITableDefinition, IColumnDefinition } from '../common/interfaces/IColumnConfig';
+import { ITableDefinition, IColumnDefinition, OperationKind } from '../common/interfaces/IColumnConfig';
 
 @Component({
   selector: 'settings',
@@ -53,7 +53,16 @@ export class SettingsComponent implements OnInit {
     {
       columnDef:'action',
       header: 'Action',
-      action: (item: GetTrackedCryptoResponse) => console.log(item)
+      actions:[
+        {
+          label:'Delete',
+          operationKind: OperationKind.Remove
+        },
+        {
+          label:'Update',
+          operationKind: OperationKind.Update
+        }
+      ]
     },
   ];
 
@@ -98,8 +107,15 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  handleAction(item: GetTrackedCryptoResponse) {
-    this.removeTrackedPair(item);
+  handleAction(event: { item: any, operationKind: OperationKind }) {
+    switch (event.operationKind)
+    {
+      case OperationKind.Update:
+        console.log('Update')
+        break;
+      case OperationKind.Remove:
+        this.removeTrackedPair(event.item);
+    }
   }
 
   onSubmit() {

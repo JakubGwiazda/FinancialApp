@@ -9,5 +9,13 @@ export interface IColumnDefinition{
   header: string;
   width?: string;
   cell?: (element: any) => string;
-  action?: (item: any) => void;
+  actions?: { 
+    label: string;
+    operationKind: OperationKind 
+  }[];
+}
+
+export enum OperationKind{
+  Remove = 1,
+  Update = 2
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
-import { ITableDefinition } from '../../interfaces/IColumnConfig';
+import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -15,7 +15,7 @@ import { ITableDefinition } from '../../interfaces/IColumnConfig';
           {{ column?.cell(row) }}
         </ng-container>
         <ng-template #actionButton>
-          <button mat-button (click)="onActionClick(row)">Akcja</button>
+            <button *ngFor="let action of column.actions" mat-button (click)="onActionClick(row, action.operationKind)">{{action.label}}</button>
         </ng-template>
       </td>      
     </ng-container>
@@ -33,9 +33,9 @@ import { ITableDefinition } from '../../interfaces/IColumnConfig';
 
 export class DynamicTableComponent<T>{
   @Input() tableData!: ITableDefinition;
-  @Output() itemAction = new EventEmitter<T>();
+  @Output() itemAction = new EventEmitter<{ item: T, operationKind: OperationKind }>();
 
-  onActionClick(item: T) {
-    this.itemAction.emit(item)
+  onActionClick(item: T, operationKind: OperationKind) {
+    this.itemAction.emit({item, operationKind})
   }
 }
