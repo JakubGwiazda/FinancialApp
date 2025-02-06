@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, output, SimpleChanges } from '@angular/core';
 import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig';
+import { DataService } from 'src/app/services/event-bus.service';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -32,10 +33,13 @@ import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig'
 })
 
 export class DynamicTableComponent<T>{
-  @Input() tableData!: ITableDefinition;
+  @Input() tableData!: ITableDefinition<T>;
   @Output() itemAction = new EventEmitter<{ item: T, operationKind: OperationKind, dataType: string }>();
+
+  constructor(){}
 
   onActionClick(item: T, operationKind: OperationKind) {
     this.itemAction.emit({item, operationKind, dataType: this.tableData.dataType})
   }
+
 }

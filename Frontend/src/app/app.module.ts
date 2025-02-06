@@ -24,6 +24,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { DynamicTableComponent } from './common/components/dynamic-table/dynamic-table.component';
 import { EditModalComponent } from './common/components/edit-modal/edit-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SettingsTableComponent } from './app-settings/tables/settings-table/settings-table.component';
+import { TrackedPairTableComponent } from './app-settings/tables/tracked-pair-table/tracked-pair-table.component';
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
@@ -42,7 +44,9 @@ export function apiConfigFactory (): Configuration {
         UploadFileDirective,
         SettingsComponent,
         DynamicTableComponent,
-        EditModalComponent
+        EditModalComponent,
+        SettingsTableComponent,
+        TrackedPairTableComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

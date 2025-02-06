@@ -1,6 +1,6 @@
-export interface ITableDefinition {
+export interface ITableDefinition<T> {
   columns: IColumnDefinition[];
-  dataSource: [];
+  dataSource: T[];
   displayedColumns: string[];
   dataType: string;
 }
