@@ -12,4 +12,5 @@ export * from './result';
 export * from './setAppSettingCmd';
 export * from './settingValueType';
 export * from './trackNewCryptoCmd';
+export * from './updateTrackedPairCmd';
 export * from './weatherForecast';

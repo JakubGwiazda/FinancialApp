@@ -11,6 +11,7 @@ namespace FinancialApp.Application.Queries
         public string Name { get; set; }
         public string Value { get; set; }
         public SettingValueType ValueType { get; set; }
+        public string Description { get; set; }
     }
 
     public class GetAppSettingsQuery : IRequest<Result<List<GetAppSettingsResponse>>>
@@ -33,7 +34,8 @@ namespace FinancialApp.Application.Queries
                 Id = p.Id,
                 Name = p.Name,
                 Value = p.Value,
-                ValueType = p.ValueType
+                ValueType = p.ValueType,
+                Description = p.Description,
             }).ToList();
         }
     }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FinancialApp.Application.Commands;
+using FinancialApp.Domain;
+using FluentResults;
 
 namespace FinancialApp.Application.Interfaces
 {
     public interface ICryptoCurrenciesSettingsRepository : IBaseRepositoryOperation
     {
-
+        Task<Result> UpdateRecord(UpdateTrackedPairCmd request, CryptoCurrenciesSettings data);
     }
 }

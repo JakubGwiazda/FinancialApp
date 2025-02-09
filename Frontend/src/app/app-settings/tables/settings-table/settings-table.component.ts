@@ -7,7 +7,8 @@ export interface  ISettingsTableData{
   id: number,
   name: string,
   value: string,
-  valueType: SettingValueType
+  valueType: SettingValueType,
+  description: string,
 }
 
 @Component({

@@ -1,7 +1,10 @@
 ﻿using CryptoInfo.Infrastructure.Context;
+using FinancialApp.Application.Commands;
 using FinancialApp.Application.Interfaces;
+using FinancialApp.Domain;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace FinancialApp.Infrastructure.Repositories
 {
@@ -53,6 +56,29 @@ namespace FinancialApp.Infrastructure.Repositories
         public async Task<T> GetRecord<T>(int id) where T : class
         {
             return await _baseContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<Result> UpdateRecord(UpdateTrackedPairCmd request,  CryptoCurrenciesSettings data)
+        {
+            try
+            {
+                    var existingRecord = await _baseContext.CryptoCurrenciesSettings.FindAsync(data.Id);
+                    if (existingRecord == null)
+                    {
+                        return Result.Fail("Entity not found");
+                    }
+
+                    existingRecord.CryptoCurrencySymbol = request.CryptoName;
+                    existingRecord.FiatCurrencySymbol = request.Currency;
+                 
+
+                    await _baseContext.SaveChangesAsync();
+                    return Result.Ok();                
+            }
+            catch (Exception)
+            {
+                return Result.Fail("Update entity was not successful");
+            }
         }
     }
 }

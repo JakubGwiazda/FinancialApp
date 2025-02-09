@@ -9,17 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SettingValueType } from './settingValueType';
 
 
-export interface GetAppSettingsResponse { 
+export interface UpdateTrackedPairCmd { 
     id?: number;
-    name?: string | null;
-    value?: string | null;
-    valueType?: SettingValueType;
-    description?: string | null;
+    cryptoName?: string | null;
+    currency?: string | null;
 }
-export namespace GetAppSettingsResponse {
-}
-
 

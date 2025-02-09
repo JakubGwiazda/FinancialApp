@@ -11,5 +11,6 @@ namespace FinancialApp.Domain
         public string Name { get; set; }
         public SettingValueType ValueType { get; set; }
         public string Value { get; set; }
+        public string Description { get; set; }
     }
 }
