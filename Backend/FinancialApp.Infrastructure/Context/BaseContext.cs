@@ -17,9 +17,9 @@ namespace CryptoInfo.Infrastructure.Context
             _configuration= configuration;
         }
 
-        public DbSet<TrackedCryptocurrencies> CryptoInformation { get; set; }
+        public DbSet<CryptoData> CryptoData { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
-        public DbSet<TrackedCryptocurrencies> CryptoCurrenciesSettings { get; set; }
+        public DbSet<TrackedCryptocurrencies> TrackedCryptocurrencies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

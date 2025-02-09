@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialApp.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    [Migration("20250209141419_UpdateCryptoData")]
-    partial class UpdateCryptoData
+    [Migration("20250209203245_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,6 +1,7 @@
 ﻿using FinancialApp.Application.Interfaces;
 using FinancialApp.Domain;
 using FinancialApp.Infrastructure.ExternalApiClients;
+using FinancialApp.Infrastructure.ExternalApiClients.Models.Binance;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,7 +10,6 @@ namespace FinancialApp.Infrastructure.Workers
     internal class RequestWorker : BackgroundService
     {
         private readonly HttpClient _httpClient;
-        private ICryptoCurrenciesSettingsRepository _repository;
         //private const string apiUrl = "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT";
         private const string apiUrl = "https://api.binance.com/api/v3/avgPrice?symbol=";
         private readonly IServiceScopeFactory _scopeFactory;
@@ -35,15 +35,19 @@ namespace FinancialApp.Infrastructure.Workers
                     {
                         foreach (var record in trackedData)
                         {
-                            var sumbol = record.Name + record.ReferenceCurrencyName;
-                            var avgPrice = await _client.GetAvgPrice(sumbol);
+                             var lastData = await repository.GetLastCryptoUpdate(record.Id);
+                             var sumbol = record.Name + record.ReferenceCurrencyName;
+                             var avgPrice = await _client.GetAvgPrice(sumbol);
+                            
                             record.CryptoData.Add(new CryptoData()
                             {
                                 Name = sumbol,
                                 Price = avgPrice.Price,
-                                CreateDate = DateTime.Now,                                
+                                PriceChange = CalculatePriceChange(lastData, avgPrice.Price),
+                                CreateDate = DateTime.Now,       
+                                TrackedCryptocurrency = record
                             });
-                            await _repository.UpdateRecord(record);
+                            await repository.SaveChangesAsync();
                         }
 
                     }
@@ -56,6 +60,18 @@ namespace FinancialApp.Infrastructure.Workers
                 await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
             }
 
+        }
+
+        private double CalculatePriceChange(CryptoData? lastData, double currentPrice)
+        {
+            if (lastData == null)
+            {
+                return currentPrice;
+            }
+            else
+            {
+                return (currentPrice / lastData.Price) * 100;
+            }
         }
     }
 }

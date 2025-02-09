@@ -1,11 +1,6 @@
 ﻿using FinancialApp.Infrastructure.ExternalApiClients.Models.Binance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+using Newtonsoft.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace FinancialApp.Infrastructure.ExternalApiClients
 {
@@ -20,9 +15,13 @@ namespace FinancialApp.Infrastructure.ExternalApiClients
 
         public async Task<AvgPrice> GetAvgPrice(string assetSymbol)
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
             HttpResponseMessage response = await _httpClient.GetAsync(apiUrl + assetSymbol);
             string jsonResponse = await response.Content.ReadAsStringAsync();
-            AvgPrice avgPrice = JsonSerializer.Deserialize<AvgPrice>(jsonResponse);
+            AvgPrice avgPrice = JsonConvert.DeserializeObject<AvgPrice>(jsonResponse);
             return avgPrice;
         }
     }

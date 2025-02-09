@@ -51,7 +51,7 @@ namespace FinancialApp.Infrastructure.Migrations
                     TrackedCryptocurrencyId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<double>(type: "REAL", nullable: false),
-                    PriceChange = table.Column<double>(type: "REAL", nullable: false),
+                    PriceChange = table.Column<double>(type: "REAL", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>

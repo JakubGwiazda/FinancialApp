@@ -70,7 +70,7 @@ namespace FinancialApp.Infrastructure.Repositories
         {
             try
             {
-                    var existingRecord = await _baseContext.CryptoCurrenciesSettings.FindAsync(data.Id);
+                    var existingRecord = await _baseContext.TrackedCryptocurrencies.FindAsync(data.Id);
                     if (existingRecord == null)
                     {
                         return Result.Fail("Entity not found");
@@ -88,9 +88,14 @@ namespace FinancialApp.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateRecord(TrackedCryptocurrencies data)
+        public async Task SaveChangesAsync()
         {
             await _baseContext.SaveChangesAsync();
+        }
+
+        public async Task<CryptoData> GetLastCryptoUpdate(int id)
+        {
+            return await _baseContext.CryptoData.Where(p => p.TrackedCryptocurrencyId == id).OrderByDescending(p => p.CreateDate).FirstOrDefaultAsync();
         }
     }
 }
