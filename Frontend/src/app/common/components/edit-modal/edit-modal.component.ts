@@ -9,17 +9,11 @@ import { ITrackedPairs } from 'src/app/app-settings/tables/tracked-pair-table/tr
   template: `
     <h1 mat-dialog-title>Edit</h1>
     <div mat-dialog-content class="mat-typography">
-    <form [formGroup]="editForm">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Crypto Currency Symbol</mat-label>
-          <input matInput formControlName="cryptoCurrencySymbol" readonly/>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Fiat Currency Symbol</mat-label>
-          <input matInput formControlName="fiatCurrencySymbol" readonly/>
-        </mat-form-field>
+      <div>Crypto symbol: {{ this.data.item.cryptoCurrencySymbol }}</div>
+      <div>Reference currency: {{ this.data.item.fiatCurrencySymbol }}</div>
+      <form [formGroup]="editForm">
         <mat-checkbox formControlName="collectData">Collect data</mat-checkbox>
-        </form>
+      </form>
     </div>
     <div mat-dialog-actions class="d-flex justify-content-end">
       <button mat-flat-button color="warn" (click)="close()">Cancel</button>
@@ -27,11 +21,11 @@ import { ITrackedPairs } from 'src/app/app-settings/tables/tracked-pair-table/tr
     </div>
   `,
   styleUrl: './edit-modal.component.scss',
-  standalone: false
+  standalone: false,
 })
 export class EditModalComponent {
   @Input() item: ITrackedPairs;
-  
+
   editForm: FormGroup;
 
   constructor(
@@ -40,10 +34,8 @@ export class EditModalComponent {
     private fb: FormBuilder
   ) {
     this.item = data.item;
-    this.editForm = this.fb.group({
-      cryptoCurrencySymbol: [data.item.cryptoCurrencySymbol, Validators.required],
-      fiatCurrencySymbol: [data.item.fiatCurrencySymbol, Validators.required],
-      collectData: [data.item.collectData]
+    this.editForm = this.fb.group({   
+      collectData: [data.item.collectData],
     });
   }
 
@@ -52,13 +44,12 @@ export class EditModalComponent {
   }
 
   save(): void {
-    if(this.editForm.valid){
+    if (this.editForm.valid) {
       const updatedItem: ITrackedPairs = {
-        ...this.data.item, 
+        ...this.data.item,
         ...this.editForm.value,
       };
       this.dialogRef.close(updatedItem);
     }
   }
-
 }

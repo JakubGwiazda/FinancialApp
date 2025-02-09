@@ -4,6 +4,7 @@ using FinancialApp.Application.Interfaces;
 using FinancialApp.Domain;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 
 namespace FinancialApp.Infrastructure.Repositories
@@ -48,9 +49,16 @@ namespace FinancialApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<List<T>> GetAllRecords<T>() where T : class
+        public async Task<List<T>> GetAllRecords<T>(Expression<Func<T, bool>> predicate = null) where T : class
         {
-            return await _baseContext.Set<T>().ToListAsync();
+            IQueryable<T> query = _baseContext.Set<T>();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<T> GetRecord<T>(int id) where T : class
@@ -78,6 +86,11 @@ namespace FinancialApp.Infrastructure.Repositories
             {
                 return Result.Fail("Update entity was not successful");
             }
+        }
+
+        public async Task UpdateRecord(TrackedCryptocurrencies data)
+        {
+            await _baseContext.SaveChangesAsync();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace FinancialApp.Domain
         public int TrackedCryptocurrencyId { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
-        public double PriceChange { get; set; }
+        public double? PriceChange { get; set; }
         public DateTime CreateDate { get; set; }
 
         [ForeignKey(nameof(TrackedCryptocurrencyId))]

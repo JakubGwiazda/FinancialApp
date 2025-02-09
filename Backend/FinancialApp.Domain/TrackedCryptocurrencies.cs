@@ -11,6 +11,6 @@ namespace FinancialApp.Domain
         public string Name { get; set; }
         public string ReferenceCurrencyName { get; set; }
         public bool CollectData { get;set; }
-        public virtual ICollection<CryptoData> CryptoData { get; set; }
+        public virtual ICollection<CryptoData> CryptoData { get; set; } = new List<CryptoData>();
     }
 }
