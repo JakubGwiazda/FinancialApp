@@ -58,7 +58,7 @@ namespace FinancialApp.Infrastructure.Repositories
             return await _baseContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<Result> UpdateRecord(UpdateTrackedPairCmd request,  CryptoCurrenciesSettings data)
+        public async Task<Result> UpdateRecord(UpdateTrackedPairCmd request,  TrackedCryptocurrencies data)
         {
             try
             {
@@ -68,11 +68,10 @@ namespace FinancialApp.Infrastructure.Repositories
                         return Result.Fail("Entity not found");
                     }
 
-                    existingRecord.CryptoCurrencySymbol = request.CryptoName;
-                    existingRecord.FiatCurrencySymbol = request.Currency;
-                 
+                    existingRecord.CollectData = request.CollectData;
 
-                    await _baseContext.SaveChangesAsync();
+
+                await _baseContext.SaveChangesAsync();
                     return Result.Ok();                
             }
             catch (Exception)

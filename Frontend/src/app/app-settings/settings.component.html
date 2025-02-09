@@ -1,16 +1,35 @@
-<form [formGroup]="cryptoSettings" (ngSubmit)="onSubmit()" class="w-50 d-flex justify-content-around">
-    <mat-form-field>
-      <mat-label>Crypto Symbol</mat-label>
-      <input matInput formControlName="cryptoSymbol" placeholder="Ex. BTC, LINK">
-      <mat-hint align="start">Short name of interesting coin</mat-hint>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Currency</mat-label>
-        <input matInput formControlName="currency" placeholder="Ex. USDT, PLN">
-        <mat-hint align="start">Official currency</mat-hint>
-      </mat-form-field>
-      <button mat-flat-button color="primary" type="submit" [disabled]="cryptoSettings.invalid">Add tracker</button>
-  </form>
-    
-  <app-tracked-pair-table (action)="handleAction($event)" [data] ="trackedCryptoTableData"></app-tracked-pair-table>
-  <app-settings-table  [data] ="settingsTableData"></app-settings-table>
+<form
+  [formGroup]="cryptoSettings"
+  (ngSubmit)="onSubmit()"
+  class="w-50 d-flex justify-content-around"
+>
+  <mat-form-field>
+    <mat-label>Crypto Symbol</mat-label>
+    <input
+      matInput
+      formControlName="cryptoSymbol"
+      placeholder="Ex. BTC, LINK"
+    />
+    <mat-hint align="start">Short name of interesting coin</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Currency</mat-label>
+    <input matInput formControlName="currency" placeholder="Ex. USDT, PLN" />
+    <mat-hint align="start">Official currency</mat-hint>
+  </mat-form-field>
+  <mat-checkbox formControlName="collectData">Collect data</mat-checkbox>
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="cryptoSettings.invalid"
+  >
+    Add tracker
+  </button>
+</form>
+
+<app-tracked-pair-table
+  (action)="handleAction($event)"
+  [data]="trackedCryptoTableData"
+></app-tracked-pair-table>
+<app-settings-table [data]="settingsTableData"></app-settings-table>

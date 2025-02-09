@@ -17,9 +17,9 @@ namespace CryptoInfo.Infrastructure.Context
             _configuration= configuration;
         }
 
-        public DbSet<CryptoInformation> CryptoInformation { get; set; }
+        public DbSet<TrackedCryptocurrencies> CryptoInformation { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
-        public DbSet<CryptoCurrenciesSettings> CryptoCurrenciesSettings { get; set; }
+        public DbSet<TrackedCryptocurrencies> CryptoCurrenciesSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,11 +30,17 @@ namespace CryptoInfo.Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var basePath = AppContext.BaseDirectory;
-            var databasePath = Path.Combine(basePath, "Database", "FinancialDb.db");
+            if (!options.IsConfigured)
+            {
+                var connectionString = _configuration?.GetConnectionString("FinancialDatabase") ?? "Data Source=../Database/FinancialDb.db";
 
-            //var connectionString = _configuration.GetConnectionString("FinancialDatabase");
-            options.UseSqlite($"Data Source={databasePath}");
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("Database connection string is missing.");
+                }
+
+                options.UseSqlite(connectionString);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ export interface ITrackedPairs{
   id: number,
   cryptoCurrencySymbol: string,
   fiatCurrencySymbol: string,
+  collectData: boolean;
 }
 
 @Component({
@@ -30,6 +31,12 @@ export class TrackedPairTableComponent  extends DynamicTableComponent<ITrackedPa
     header: 'Currency',
     editable: true,
     cell: (item: GetTrackedCryptoResponse) => `${item?.fiatCurrencySymbol}`
+  },
+  {
+    columnDef:'collectData',
+    header: 'Collect data',
+    editable: true,
+    cell: (item: GetTrackedCryptoResponse) => `${item?.collectData}`
   },
   {
     columnDef:'action',

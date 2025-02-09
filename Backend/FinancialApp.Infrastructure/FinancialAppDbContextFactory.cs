@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace FinancialApp.Infrastructure
 {
-    public class FinancialAppDbContextFactory : IDesignTimeDbContextFactory<BaseContext>
+/*    public class FinancialAppDbContextFactory : IDesignTimeDbContextFactory<BaseContext>
     {
         public BaseContext CreateDbContext(string[] args)
         {
@@ -14,5 +14,5 @@ namespace FinancialApp.Infrastructure
 
             return new BaseContext(optionsBuilder.Options);
         }
-    }
+    }*/
 }

@@ -15,5 +15,6 @@ export interface GetTrackedCryptoResponse {
     id?: number;
     cryptoCurrencySymbol?: string | null;
     fiatCurrencySymbol?: string | null;
+    collectData?: boolean;
 }
 

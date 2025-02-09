@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialApp", "FinancialApp.csproj", "{CC60022E-EDE5-464C-9B35-46D18C93BB42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp", "FinancialApp.csproj", "{CC60022E-EDE5-464C-9B35-46D18C93BB42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialApp.Domain", "..\FinancialApp.Domain\FinancialApp.Domain.csproj", "{1CE3A2CA-FCD1-467F-B9C8-D7E0B614A39B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp.Domain", "..\FinancialApp.Domain\FinancialApp.Domain.csproj", "{1CE3A2CA-FCD1-467F-B9C8-D7E0B614A39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialApp.Infrastructure", "..\FinancialApp.Infrastructure\FinancialApp.Infrastructure.csproj", "{A2A7ADAB-F777-4B32-A083-9D963C908629}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp.Infrastructure", "..\FinancialApp.Infrastructure\FinancialApp.Infrastructure.csproj", "{A2A7ADAB-F777-4B32-A083-9D963C908629}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialApp.Application", "..\FinancialApp.Application\FinancialApp.Application.csproj", "{9599B6AA-760A-4876-A7C4-816C47F9B3D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp.Application", "..\FinancialApp.Application\FinancialApp.Application.csproj", "{9599B6AA-760A-4876-A7C4-816C47F9B3D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{2215561E-B1D8-46A3-9B59-45272C18F37F}"
+	ProjectSection(SolutionItems) = preProject
+		..\Database\FinancialDb.db = ..\Database\FinancialDb.db
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

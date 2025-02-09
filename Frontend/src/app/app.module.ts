@@ -26,6 +26,7 @@ import { EditModalComponent } from './common/components/edit-modal/edit-modal.co
 import { MatDialogModule } from '@angular/material/dialog';
 import { SettingsTableComponent } from './app-settings/tables/settings-table/settings-table.component';
 import { TrackedPairTableComponent } from './app-settings/tables/tracked-pair-table/tracked-pair-table.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
@@ -67,6 +68,7 @@ export function apiConfigFactory (): Configuration {
         MatInputModule,
         MatHint,
         MatDialogModule,
+        MatCheckboxModule
       ],
     providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

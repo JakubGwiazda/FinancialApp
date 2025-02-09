@@ -14,5 +14,6 @@
 export interface TrackNewCryptoCmd { 
     cryptoSymbol?: string | null;
     fiatSymbol?: string | null;
+    collectData?: boolean;
 }
 

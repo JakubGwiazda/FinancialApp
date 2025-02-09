@@ -34,6 +34,7 @@ export class SettingsComponent implements OnInit {
   cryptoSettings = new FormGroup({
     cryptoSymbol: new FormControl('', Validators.required),
     currency: new FormControl('', [Validators.required]),
+    collectData: new FormControl(false)
   });
 
   settingsTableData: ISettingsTableData[] = [];
@@ -67,8 +68,7 @@ export class SettingsComponent implements OnInit {
     .pipe(
       switchMap(updatedData => this.settingsService.updateTrackedPair({
         id: updatedData?.id,
-        cryptoName: updatedData?.cryptoCurrencySymbol,
-        currency: updatedData?.fiatCurrencySymbol
+        collectData: updatedData?.collectData
       })))
     .subscribe(() =>{
       this.getAllTrackedPairs();
@@ -76,20 +76,22 @@ export class SettingsComponent implements OnInit {
   }
 
   onSubmit() {
-    let cmd: TrackNewCryptoCmd = {
-      cryptoSymbol: this.cryptoSettings.controls.cryptoSymbol.value,
-      fiatSymbol: this.cryptoSettings.controls.currency.value,
-    };
     this.settingsService
-      .addTracker(cmd)
-      .pipe(
-        switchMap((response) => {
-          return this.settingsService.getTrackerPairs();
-        })
-      )
+      .addTracker({
+        cryptoSymbol: this.cryptoSettings.controls.cryptoSymbol.value,
+        fiatSymbol: this.cryptoSettings.controls.currency.value,
+        collectData: this.cryptoSettings.controls.collectData.value ?? false,
+      })      
       .subscribe(() => {
         this.getAllTrackedPairs();
       });
+  }
+
+  removeTrackedPair(item: GetTrackedCryptoResponse) {
+    this.settingsService.removeTracker({id: item.id})
+    .subscribe((res) => {
+      this.getAllTrackedPairs();
+    });
   }
 
   getAllTrackedPairs(){
@@ -99,6 +101,7 @@ export class SettingsComponent implements OnInit {
           id: p.id,
           cryptoCurrencySymbol: p.cryptoCurrencySymbol,
           fiatCurrencySymbol: p.fiatCurrencySymbol,
+          collectData: p.collectData
         })) as ITrackedPairs[];
       }
       this.cryptoSettings.reset();
@@ -117,23 +120,5 @@ export class SettingsComponent implements OnInit {
         })) as ISettingsTableData[];
       }
     });
-  }
-
-  removeTrackedPair(item: GetTrackedCryptoResponse) {
-    // this.settingsService.removeTracker({id: item.id})
-    // .pipe(
-    //   switchMap(res => {
-    //     return this.settingsService.getTrackerPairs();
-    //   })
-    // ).subscribe((res) => {
-    //   if (res && res.value) {
-    //     this.trackedCryptoTable.dataSource = res.value.map(p => ({
-    //       id: p.id,
-    //       cryptoCurrencySymbol: p.cryptoCurrencySymbol,
-    //       fiatCurrencySymbol: p.fiatCurrencySymbol,
-    //     })) as [];
-    //   }
-    //   this.cryptoSettings.reset();
-    // });
   }
 }

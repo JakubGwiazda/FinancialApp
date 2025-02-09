@@ -6,6 +6,6 @@ namespace FinancialApp.Application.Interfaces
 {
     public interface ICryptoCurrenciesSettingsRepository : IBaseRepositoryOperation
     {
-        Task<Result> UpdateRecord(UpdateTrackedPairCmd request, CryptoCurrenciesSettings data);
+        Task<Result> UpdateRecord(UpdateTrackedPairCmd request, TrackedCryptocurrencies data);
     }
 }

@@ -440,6 +440,9 @@
           "fiatCurrencySymbol": {
             "type": "string",
             "nullable": true
+          },
+          "collectData": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -648,6 +651,9 @@
           "fiatSymbol": {
             "type": "string",
             "nullable": true
+          },
+          "collectData": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -659,13 +665,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "cryptoName": {
-            "type": "string",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
+          "collectData": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

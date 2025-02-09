@@ -8,6 +8,7 @@ namespace FinancialApp.Application.Commands
     {
         public string CryptoSymbol { get; set; }
         public string FiatSymbol { get; set; }
+        public bool CollectData { get;set; }
     }
 
     public class TrackNewCryptoHandler : IRequestHandler<TrackNewCryptoCmd, Result>
@@ -20,9 +21,10 @@ namespace FinancialApp.Application.Commands
 
         public async Task<Result> Handle(TrackNewCryptoCmd request, CancellationToken cancellationToken)
         {
-            var a = await _cryptoCurrenciesSettingsRepository.AddNewRecord(new CryptoCurrenciesSettings {
-                CryptoCurrencySymbol = request.CryptoSymbol, 
-                FiatCurrencySymbol = request.FiatSymbol 
+            var a = await _cryptoCurrenciesSettingsRepository.AddNewRecord(new TrackedCryptocurrencies {
+                Name = request.CryptoSymbol, 
+                ReferenceCurrencyName = request.FiatSymbol,
+                CollectData = request.CollectData
             });
 
             return Result.Ok();

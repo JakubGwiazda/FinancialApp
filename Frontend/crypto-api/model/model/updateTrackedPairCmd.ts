@@ -13,7 +13,6 @@
 
 export interface UpdateTrackedPairCmd { 
     id?: number;
-    cryptoName?: string | null;
-    currency?: string | null;
+    collectData?: boolean;
 }
 

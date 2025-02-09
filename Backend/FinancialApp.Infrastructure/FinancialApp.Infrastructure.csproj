@@ -27,10 +27,4 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Database\FinancialDb.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

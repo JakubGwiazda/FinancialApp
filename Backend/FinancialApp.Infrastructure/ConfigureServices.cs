@@ -12,11 +12,9 @@ public static class ConfigurationServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        Batteries.Init();
-        var connectionString = configuration.GetConnectionString("FinancialDatabase");
-
+      
         services.AddDbContext<BaseContext>(options =>
-            options.UseSqlite(connectionString));
+                options.UseSqlite(configuration.GetConnectionString("FinancialDatabase")));
         services.AddHostedService<RequestWorker>();
 
         services.AddScoped<ICryptoCurrenciesSettingsRepository, CryptoCurrenciesSettingsRepository>();

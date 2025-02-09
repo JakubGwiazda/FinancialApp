@@ -12,13 +12,14 @@ import { ITrackedPairs } from 'src/app/app-settings/tables/tracked-pair-table/tr
     <form [formGroup]="editForm">
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Crypto Currency Symbol</mat-label>
-          <input matInput formControlName="cryptoCurrencySymbol" />
+          <input matInput formControlName="cryptoCurrencySymbol" readonly/>
         </mat-form-field>
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Fiat Currency Symbol</mat-label>
-          <input matInput formControlName="fiatCurrencySymbol" />
+          <input matInput formControlName="fiatCurrencySymbol" readonly/>
         </mat-form-field>
-      </form>
+        <mat-checkbox formControlName="collectData">Collect data</mat-checkbox>
+        </form>
     </div>
     <div mat-dialog-actions class="d-flex justify-content-end">
       <button mat-flat-button color="warn" (click)="close()">Cancel</button>
@@ -41,7 +42,8 @@ export class EditModalComponent {
     this.item = data.item;
     this.editForm = this.fb.group({
       cryptoCurrencySymbol: [data.item.cryptoCurrencySymbol, Validators.required],
-      fiatCurrencySymbol: [data.item.fiatCurrencySymbol, Validators.required]
+      fiatCurrencySymbol: [data.item.fiatCurrencySymbol, Validators.required],
+      collectData: [data.item.collectData]
     });
   }
 

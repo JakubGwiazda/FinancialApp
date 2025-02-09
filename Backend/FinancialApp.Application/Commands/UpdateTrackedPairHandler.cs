@@ -8,8 +8,7 @@ namespace FinancialApp.Application.Commands
     public class UpdateTrackedPairCmd : IRequest<Result>
     {
         public int Id { get; set; }
-        public string CryptoName { get; set; }
-        public string Currency { get; set; }
+        public bool CollectData { get; set; }
     }
 
     internal class UpdateTrackedPairHandler : IRequestHandler<UpdateTrackedPairCmd, Result>
@@ -22,7 +21,7 @@ namespace FinancialApp.Application.Commands
 
         public async Task<Result> Handle(UpdateTrackedPairCmd request, CancellationToken cancellationToken)
         {
-            var currentData = await _repository.GetRecord<CryptoCurrenciesSettings>(request.Id);
+            var currentData = await _repository.GetRecord<TrackedCryptocurrencies>(request.Id);
 
             if (currentData == null)
             {
