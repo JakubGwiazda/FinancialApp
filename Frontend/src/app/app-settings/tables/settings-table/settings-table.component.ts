@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { GetAppSettingsResponse, SettingValueType } from 'crypto-api/model';
 import { DynamicTableComponent } from 'src/app/common/components/dynamic-table/dynamic-table.component';
-import { IColumnDefinition, ITableDefinition } from 'src/app/common/interfaces/IColumnConfig';
+import { IColumnDefinition, ITableDefinition, OperationKind } from 'src/app/common/interfaces/IColumnConfig';
 
 export interface  ISettingsTableData{
   id: number,
@@ -13,12 +13,13 @@ export interface  ISettingsTableData{
 
 @Component({
   selector: 'app-settings-table',
-  template: '<app-dynamic-table [tableData]="settingsTable"></app-dynamic-table>',
+  template: '<app-dynamic-table [tableData]="settingsTable" (itemAction)="forwardItemAction($event)"></app-dynamic-table>',
   styleUrl: './settings-table.component.scss',
   standalone: false,
 })
 export class SettingsTableComponent extends DynamicTableComponent<ISettingsTableData> implements OnInit, OnChanges{
   @Input() data!: ISettingsTableData[];
+  @Output() action = new EventEmitter<{ item: ISettingsTableData, operationKind: OperationKind, dataType: string }>();
 
   settingsTableColumns : IColumnDefinition[] = [{
         columnDef:'name',
@@ -33,7 +34,26 @@ export class SettingsTableComponent extends DynamicTableComponent<ISettingsTable
         width: '50px',
         editable: true,
         cell: (item: GetAppSettingsResponse) => `${item?.value}`
-      }];
+      },
+      {
+        columnDef:'description',
+        header: 'Description',
+        width: '200px',
+        editable: true,
+        cell: (item: GetAppSettingsResponse) => `${item?.description}`
+      },
+      {
+          columnDef:'action',
+          header: 'Action',
+          editable: false,
+          actions:[
+            {
+              label:'Update',
+              operationKind: OperationKind.Update
+            }
+          ]
+        },
+    ];
 
   settingsTable: ITableDefinition<ISettingsTableData> = {
     columns: this.settingsTableColumns,
@@ -50,5 +70,9 @@ export class SettingsTableComponent extends DynamicTableComponent<ISettingsTable
     if (changes['data'] && changes['data'].currentValue) {
       this.settingsTable.dataSource = this.data;
     }
+  }
+
+  forwardItemAction(event: { item: ISettingsTableData, operationKind: OperationKind, dataType: string }) {
+    this.action.emit(event);
   }
 }

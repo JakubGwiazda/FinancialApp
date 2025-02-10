@@ -23,6 +23,7 @@ model/result.ts
 model/setAppSettingCmd.ts
 model/settingValueType.ts
 model/trackNewCryptoCmd.ts
+model/updateSettingCmd.ts
 model/updateTrackedPairCmd.ts
 model/weatherForecast.ts
 param.ts

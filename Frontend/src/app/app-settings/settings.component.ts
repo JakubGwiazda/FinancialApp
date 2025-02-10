@@ -13,11 +13,12 @@ import {
 import {
   OperationKind,
 } from '../common/interfaces/IColumnConfig';
-import { EditModalComponent } from '../common/components/edit-modal/edit-modal.component';
+import { EditModalComponent } from './tables/tracked-pair-table/modals/edit-modal/edit-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISettingsTableData } from './tables/settings-table/settings-table.component';
 import { ITrackedPairs } from './tables/tracked-pair-table/tracked-pair-table.component';
-import { switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
+import { EditSettingModalComponent } from './tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
 
 @Component({
   selector: 'settings',
@@ -59,6 +60,18 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  handleSettingsAction(event: {
+    item: ISettingsTableData;
+    operationKind: OperationKind;
+    dataType: string;
+  }){
+      switch (event.operationKind) {
+        case OperationKind.Update:        
+            this.openSettingsEditDialog(event.item);        
+          break;
+      }
+  }
+
   openTrackedCryptoEditDialog(item: ITrackedPairs): void {
     const dialogRef = this.dialog.open<EditModalComponent, { item: ITrackedPairs }, ITrackedPairs>(EditModalComponent, {
       data: {item},
@@ -66,12 +79,30 @@ export class SettingsComponent implements OnInit {
 
     dialogRef.afterClosed()
     .pipe(
+      filter(data => !!data),
       switchMap(updatedData => this.settingsService.updateTrackedPair({
         id: updatedData?.id,
         collectData: updatedData?.collectData
       })))
     .subscribe(() =>{
       this.getAllTrackedPairs();
+    })
+  }
+
+  openSettingsEditDialog(item: ISettingsTableData): void {
+    const dialogRef = this.dialog.open<EditSettingModalComponent, { item: ISettingsTableData }, ISettingsTableData>(EditSettingModalComponent, {
+      data: {item},
+    });
+
+    dialogRef.afterClosed()
+    .pipe(
+      filter(data => !!data),
+      switchMap(updatedData => this.settingsService.updateSettings({
+        id: updatedData?.id,
+        value: updatedData?.value
+      })))
+    .subscribe(() =>{
+      this.getAllSettings();
     })
   }
 
@@ -118,6 +149,7 @@ export class SettingsComponent implements OnInit {
           valueType: p.valueType,
           description: p.description
         })) as ISettingsTableData[];
+        console.log(this.settingsTableData)
       }
     });
   }

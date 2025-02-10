@@ -1,7 +1,6 @@
 ﻿using FinancialApp.Application.Interfaces;
 using FinancialApp.Domain;
 using FinancialApp.Infrastructure.ExternalApiClients;
-using FinancialApp.Infrastructure.ExternalApiClients.Models.Binance;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -23,7 +22,7 @@ namespace FinancialApp.Infrastructure.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-             
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 using (var scope = _scopeFactory.CreateScope())
@@ -35,16 +34,16 @@ namespace FinancialApp.Infrastructure.Workers
                     {
                         foreach (var record in trackedData)
                         {
-                             var lastData = await repository.GetLastCryptoUpdate(record.Id);
-                             var sumbol = record.Name + record.ReferenceCurrencyName;
-                             var avgPrice = await _client.GetAvgPrice(sumbol);
-                            
+                            var lastData = await repository.GetLastCryptoUpdate(record.Id);
+                            var sumbol = record.Name + record.ReferenceCurrencyName;
+                            var avgPrice = await _client.GetAvgPrice(sumbol);
+
                             record.CryptoData.Add(new CryptoData()
                             {
                                 Name = sumbol,
                                 Price = avgPrice.Price,
                                 PriceChange = CalculatePriceChange(lastData, avgPrice.Price),
-                                CreateDate = DateTime.Now,       
+                                CreateDate = DateTime.Now,
                                 TrackedCryptocurrency = record
                             });
                             await repository.SaveChangesAsync();
@@ -57,7 +56,7 @@ namespace FinancialApp.Infrastructure.Workers
                     }
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
             }
 
         }
@@ -70,7 +69,7 @@ namespace FinancialApp.Infrastructure.Workers
             }
             else
             {
-                return (currentPrice / lastData.Price) * 100;
+                return ((currentPrice / lastData.Price) * 100) - 100;
             }
         }
     }

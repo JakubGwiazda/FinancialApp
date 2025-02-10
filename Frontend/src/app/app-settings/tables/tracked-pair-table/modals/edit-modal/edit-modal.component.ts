@@ -34,7 +34,7 @@ export class EditModalComponent {
     private fb: FormBuilder
   ) {
     this.item = data.item;
-    this.editForm = this.fb.group({   
+    this.editForm = this.fb.group({
       collectData: [data.item.collectData],
     });
   }

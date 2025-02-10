@@ -61,5 +61,13 @@ namespace FinancialApp.Controllers
         {
             return await Mediator.Send(cmd);
         }
+
+        [HttpPost("update-settings", Name = "update-settings")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "Tracker has been removed")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
+        public async Task<Result> UpdateTrackedPair(UpdateSettingCmd cmd)
+        {
+            return await Mediator.Send(cmd);
+        }
     }
 }

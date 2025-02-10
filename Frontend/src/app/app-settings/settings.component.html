@@ -32,4 +32,4 @@
   (action)="handleAction($event)"
   [data]="trackedCryptoTableData"
 ></app-tracked-pair-table>
-<app-settings-table [data]="settingsTableData"></app-settings-table>
+<app-settings-table [data]="settingsTableData"   (action)="handleSettingsAction($event)"></app-settings-table>
