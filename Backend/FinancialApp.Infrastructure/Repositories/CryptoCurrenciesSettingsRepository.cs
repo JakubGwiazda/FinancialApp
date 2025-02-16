@@ -61,9 +61,21 @@ namespace FinancialApp.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<T> GetRecord<T>(int id) where T : class
+        public async Task<T> GetRecordById<T>(int id) where T : class
         {
             return await _baseContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<T> GetRecord<T>(Expression<Func<T, bool>> predicate = null) where T : class
+        {
+            IQueryable<T> query = _baseContext.Set<T>();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Result> UpdateRecord(UpdateTrackedPairCmd request,  TrackedCryptocurrencies data)

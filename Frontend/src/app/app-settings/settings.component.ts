@@ -16,9 +16,12 @@ import {
 import { EditModalComponent } from './tables/tracked-pair-table/modals/edit-modal/edit-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISettingsTableData } from './tables/settings-table/settings-table.component';
-import { ITrackedPairs } from './tables/tracked-pair-table/tracked-pair-table.component';
 import { filter, switchMap } from 'rxjs';
 import { EditSettingModalComponent } from './tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
+import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/state';
+import { getTrackedPairs } from '../store/selectors';
 
 @Component({
   selector: 'settings',
@@ -29,7 +32,8 @@ import { EditSettingModalComponent } from './tables/settings-table/modals/edit-s
 export class SettingsComponent implements OnInit {
   constructor(
     private settingsService: SettingsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private store: Store<AppState>
   ) {}
 
   cryptoSettings = new FormGroup({
@@ -43,7 +47,10 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSettings();
-    this.getAllTrackedPairs();
+    this.store.select(getTrackedPairs).subscribe(pairs=> 
+      {
+       this.trackedCryptoTableData = pairs
+      });
   }
 
   handleAction(event: {
@@ -149,7 +156,6 @@ export class SettingsComponent implements OnInit {
           valueType: p.valueType,
           description: p.description
         })) as ISettingsTableData[];
-        console.log(this.settingsTableData)
       }
     });
   }

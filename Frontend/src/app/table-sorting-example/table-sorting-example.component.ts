@@ -37,9 +37,6 @@ export class TableSortingExampleComponent implements AfterViewInit{
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
-    console.log('this.sort')
-
-    console.log(this.sort)
     this.dataSource.sort = this.sort;
   }
 }

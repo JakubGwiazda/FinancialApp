@@ -13,7 +13,8 @@ public static class ConfigurationServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ICryptoCurrenciesSettingsRepository, CryptoCurrenciesSettingsRepository>();
-
+        services.AddScoped<ICryptoDataRepository, CryptoDataRepository>();
+        
         services.AddDbContext<BaseContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("FinancialDatabase")));
         services.AddHostedService<RequestWorker>();

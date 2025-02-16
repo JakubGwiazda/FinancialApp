@@ -27,7 +27,7 @@ namespace FinancialApp.Application.Commands
         public async Task<Result> Handle(UpdateSettingCmd request, CancellationToken cancellationToken)
         {
 
-            var currentData = await _repository.GetRecord<AppSettings>(request.Id);
+            var currentData = await _repository.GetRecordById<AppSettings>(request.Id);
 
             if (currentData == null)
             {

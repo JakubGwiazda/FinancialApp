@@ -26,7 +26,7 @@ namespace FinancialApp.Application.Commands
         {
             try
             {
-                var record = await _repository.GetRecord<TrackedCryptocurrencies>(request.Id);
+                var record = await _repository.GetRecordById<TrackedCryptocurrencies>(request.Id);
                 await _repository.DeleteRecord(record);                
 
                 return Result.Ok();

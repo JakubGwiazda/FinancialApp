@@ -2,13 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { GetTrackedCryptoResponse } from 'crypto-api/model';
 import { DynamicTableComponent } from 'src/app/common/components/dynamic-table/dynamic-table.component';
 import { IColumnDefinition, ITableDefinition, OperationKind } from 'src/app/common/interfaces/IColumnConfig';
-
-export interface ITrackedPairs{
-  id: number,
-  cryptoCurrencySymbol: string,
-  fiatCurrencySymbol: string,
-  collectData: boolean;
-}
+import { ITrackedPairs } from 'src/app/common/interfaces/ITrackedPairs';
 
 @Component({
   selector: 'app-tracked-pair-table',

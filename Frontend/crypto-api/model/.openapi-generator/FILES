@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/cryptoData.service.ts
 api/settings.service.ts
 api/weatherForecast.service.ts
 configuration.ts
@@ -12,6 +13,9 @@ model/dateOnly.ts
 model/dayOfWeek.ts
 model/getAppSettingsResponse.ts
 model/getAppSettingsResponseListResult.ts
+model/getCryptoDataQuery.ts
+model/getCryptoDataResponse.ts
+model/getCryptoDataResponseListResult.ts
 model/getTrackedCryptoResponse.ts
 model/getTrackedCryptoResponseListResult.ts
 model/iError.ts

@@ -21,7 +21,7 @@ namespace FinancialApp.Application.Commands
 
         public async Task<Result> Handle(UpdateTrackedPairCmd request, CancellationToken cancellationToken)
         {
-            var currentData = await _repository.GetRecord<TrackedCryptocurrencies>(request.Id);
+            var currentData = await _repository.GetRecordById<TrackedCryptocurrencies>(request.Id);
 
             if (currentData == null)
             {

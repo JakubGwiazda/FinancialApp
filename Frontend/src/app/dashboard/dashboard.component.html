@@ -1,17 +1,35 @@
 <div>
-    <div class="d-flex">
-        <button mat-flat-button color="primary">5min</button>
-        <button class="ms-2" mat-flat-button color="primary">10min</button>
-        <button class="ms-2" mat-flat-button color="primary">30min</button>
-        <button class="ms-2" mat-flat-button color="primary">1h</button>
-    </div>
-
-<div class="d-flex flex-wrap justify-content-center">
-    <app-info-card *ngFor = "let crypto of infoCards | async"
-    [cryptoName] = crypto.cryptoName
-    [price] = crypto.price
-    [interval] = crypto.interval
-    [data] = crypto.data
+  <div class="d-flex">
+    <button mat-flat-button color="primary">5min</button>
+    <button class="ms-2" mat-flat-button color="primary">10min</button>
+    <button class="ms-2" mat-flat-button color="primary">30min</button>
+    <button class="ms-2" mat-flat-button color="primary">1h</button>
+  </div>
+  <div>
+    <ul>
+      <li *ngFor="let item of trackedPairs">
+        {{ item.cryptoCurrencySymbol }}
+      </li>
+    </ul>
+  </div>
+  <div class="d-flex flex-wrap justify-content-center">
+    <app-info-card
+      *ngFor="let crypto of infoCards | async"
+      [cryptoName]="crypto.cryptoName"
+      [price]="crypto.price"
+      [interval]="crypto.interval"
+      [data]="crypto.data"
     ></app-info-card>
-</div>
+  </div>
+  <!-- <app-draggable-window (windowOpened)="setNewWindow($event)" draggable="true"></app-draggable-window>
+<button (click)="changeColor()">Zmień kolor okna</button> -->
+
+  <div *ngFor="let chart of charts | async" class="chart-container">
+    <app-simple-card
+      [title]="chart.title"
+    >
+      <app-chart content [chartData]="chart.data"></app-chart>      
+    </app-simple-card>
+  </div>
+
 </div>

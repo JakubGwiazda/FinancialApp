@@ -117,7 +117,6 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   }
 
   addNewTransaction() {
-    console.log('klikam')
     if(this.transactionForm.valid){
       const formValue = this.transactionForm.value;
      
@@ -126,7 +125,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   }
 
   uploadFile($event: string){
-    console.log($event)
+   // console.log($event)
   }
 
   getColumnNames(): string[] {

@@ -28,6 +28,15 @@ import { SettingsTableComponent } from './app-settings/tables/settings-table/set
 import { TrackedPairTableComponent } from './app-settings/tables/tracked-pair-table/tracked-pair-table.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { EditSettingModalComponent } from './app-settings/tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DraggableWindowComponent } from './dashboard/Draggable/draggable-window/draggable-window.component';
+import { StoreModule } from '@ngrx/store';
+import { itemsReducer } from './store/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { TrackerEffects } from './store/effects';
+import { SimpleCardComponent } from './common/components/simple-card/simple-card.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ChartComponent } from './common/components/chart/chart.component';
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
@@ -50,6 +59,7 @@ export function apiConfigFactory (): Configuration {
         SettingsTableComponent,
         TrackedPairTableComponent,
         EditSettingModalComponent,
+        DraggableWindowComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -70,7 +80,15 @@ export function apiConfigFactory (): Configuration {
         MatInputModule,
         MatHint,
         MatDialogModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        DragDropModule,
+        ChartComponent,
+        StoreModule.forRoot({ cryptoState: itemsReducer }),
+        EffectsModule.forRoot([TrackerEffects]),
+        SimpleCardComponent,
+        StoreDevtoolsModule.instrument({
+          maxAge: 25,
+        }),
       ],
     providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

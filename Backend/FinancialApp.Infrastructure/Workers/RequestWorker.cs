@@ -1,5 +1,7 @@
 ﻿using FinancialApp.Application.Interfaces;
 using FinancialApp.Domain;
+using FinancialApp.Infrastructure.Common.Enums;
+using FinancialApp.Infrastructure.Common.Helpers;
 using FinancialApp.Infrastructure.ExternalApiClients;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,10 +27,14 @@ namespace FinancialApp.Infrastructure.Workers
 
             while (!stoppingToken.IsCancellationRequested)
             {
+                int breakBetweenRequests = 60; 
+
                 using (var scope = _scopeFactory.CreateScope())
                 {
                     var repository = scope.ServiceProvider.GetRequiredService<ICryptoCurrenciesSettingsRepository>();
                     var trackedData = await repository.GetAllRecords<TrackedCryptocurrencies>(p => p.CollectData);
+                    var requestSettings = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.RequestFrequency.ToString());
+                    breakBetweenRequests = TypesConverter.ConvertToType<int>(requestSettings.Value, requestSettings.ValueType);
 
                     try
                     {
@@ -43,7 +49,7 @@ namespace FinancialApp.Infrastructure.Workers
                                 Name = sumbol,
                                 Price = avgPrice.Price,
                                 PriceChange = CalculatePriceChange(lastData, avgPrice.Price),
-                                CreateDate = DateTime.Now,
+                                CreateDate = DateTime.UtcNow,
                                 TrackedCryptocurrency = record
                             });
                             await repository.SaveChangesAsync();
@@ -55,8 +61,8 @@ namespace FinancialApp.Infrastructure.Workers
                         throw;
                     }
                 }
-
-                await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+                
+                await Task.Delay(TimeSpan.FromSeconds(breakBetweenRequests), stoppingToken);
             }
 
         }
