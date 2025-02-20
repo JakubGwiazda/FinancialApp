@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { InfoCardComponent } from './info-card/info-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -37,18 +36,20 @@ import { TrackerEffects } from './store/effects';
 import { SimpleCardComponent } from './common/components/simple-card/simple-card.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ChartComponent } from './common/components/chart/chart.component';
+import { BASE_PATH } from 'crypto-api/model';
+import environment from '../environments/enviroment.json';
+import environmentProd from '../environments/enviroment.prod.json';
 
-export function apiConfigFactory (): Configuration {
-  const params: ConfigurationParameters = {
-    basePath: 'https://localhost:7054'
-  }
-  return new Configuration(params);
-}
+// export function apiConfigFactory (): Configuration {
+//   const params: ConfigurationParameters = {
+//     basePath: 'https://localhost:7054'
+//   }
+//   return new Configuration(params);
+// }
 
 @NgModule({ declarations: [
         AppComponent,
         DashboardComponent,
-        InfoCardComponent,
         MenuComponent,
         TransactionsComponent,
         TableSortingExampleComponent,
@@ -67,7 +68,7 @@ export function apiConfigFactory (): Configuration {
         BrowserModule,
         BrowserAnimationsModule,
         MatCardModule,
-        ApiModule.forRoot(apiConfigFactory),
+        //ApiModule.forRoot(apiConfigFactory),
         MatButtonModule,
         HighchartsChartModule,
         MatTableModule,
@@ -90,5 +91,8 @@ export function apiConfigFactory (): Configuration {
           maxAge: 25,
         }),
       ],
-    providers: [provideHttpClient(withInterceptorsFromDi())] })
+    providers: [
+      provideHttpClient(withInterceptorsFromDi()),
+      { provide: BASE_PATH, useValue: environmentProd.apiUrl }
+    ] })
 export class AppModule { }

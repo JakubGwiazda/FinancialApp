@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { IPriceChanges } from './reducers';
+import { TimePeriod } from 'crypto-api/model';
+import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
 
 export const getTrackedItems = createAction('GetTrackedItems');
 
@@ -15,7 +17,7 @@ export const getTrackedItemsFailure = createAction(
 );
 
 export const getPriceChanges = createAction(
-    'GetPriceChanges', props<{items: ITrackedPairs[]}>()
+    'GetPriceChanges', props<{items: ITrackedPairs[], timePeriod: TimePeriodEnum}>()
 )
 
 export const getPriceChangesSuccess = createAction(

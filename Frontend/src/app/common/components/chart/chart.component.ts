@@ -19,7 +19,8 @@ export class ChartComponent implements OnChanges{
 
   createChart() {
     const chart = createChart(this.chartContainer.nativeElement, {
-      height: 400,
+      width: this.chartContainer.nativeElement.clientWidth,
+      height: Math.min(window.innerHeight * 0.5, 400),
       timeScale: {
         timeVisible: true,
         secondsVisible: true,
@@ -31,7 +32,7 @@ export class ChartComponent implements OnChanges{
           const year = date.getFullYear();
           const hours = String(date.getUTCHours()).padStart(2, '0');
           const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-          return `${day}.${month}.${year} ${hours}:${minutes}`;
+          return `${day}.${month}.${year}`;
         },
       },
       rightPriceScale: {
@@ -55,5 +56,14 @@ export class ChartComponent implements OnChanges{
 
     lineSeries.setData(this.chartData);
     chart.timeScale().fitContent();   
+
+    const resizeChart = () => {
+      chart.resize(
+        this.chartContainer.nativeElement.clientWidth,
+        Math.min(window.innerHeight * 0.5, 400)  // Maksymalnie 50% wysokości ekranu lub 400px
+      );
+    };
+
+    window.addEventListener('resize', resizeChart);
 }
 }

@@ -12,8 +12,8 @@ import {
   ICandleData,
   ICryptoInfoData,
 } from '../common/interfaces/ICryptoInfoData';
-import { BehaviorSubject, Observable, map, of, switchMap, take } from 'rxjs';
-import { CryptoDataService, SettingsService } from 'crypto-api/model';
+import { BehaviorSubject, Observable, map, of, switchMap, take, tap } from 'rxjs';
+import { CryptoDataService, SettingsService, TimePeriod } from 'crypto-api/model';
 import {
   createChart,
   LineSeries,
@@ -27,6 +27,8 @@ import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { getTrackedPairs, selectPriceChanges } from '../store/selectors';
 import { AppState } from '../store/state';
 import { IPriceChanges } from '../store/reducers';
+import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 export interface ChartData {
   id: number;
@@ -46,10 +48,19 @@ export class DashboardComponent implements OnInit {
   public infoCards: Observable<ICryptoInfoData[]> = of([]);
   private newWindow: Window | null = null;
   trackedPairs: ITrackedPairs[] = [];
+  timeRanges: Record<TimePeriodEnum,string>={
+    [TimePeriodEnum.h1]: '1 Hour',
+    [TimePeriodEnum.h3]: '3 Hours',
+    [TimePeriodEnum.h6]: '6 Hours',
+    [TimePeriodEnum.h12]: '12 Hours',
+    [TimePeriodEnum.d1]: '1 Day',
+    [TimePeriodEnum.d3]: '3 Days',
+    [TimePeriodEnum.d6]: '6 Days',
+    [TimePeriodEnum.d15]: '15 Days',
+    [TimePeriodEnum.d30]: '30 Days'
+  }
 
   constructor(
-    private service: CryptoDataService,
-    private settingsService: SettingsService,
     private store: Store<AppState>
   ) {}
 
@@ -80,23 +91,46 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
-
-  generateCharts(){
-    // this.createCharts(this.charts.value[0]);
-    // this.createCharts(this.charts.value[1]);
-  }
-
+  
   async ngOnInit() {
     this.store.dispatch(getTrackedItems());
-    this.store.select(getTrackedPairs).subscribe((pairs) => {
-      this.store.dispatch(getPriceChanges({ items: pairs }));
-      this.store.select(selectPriceChanges).subscribe((p) => {
-         this.charts.next(this.convertToLineChartData(p));
-         
+    this.downloadChartsData(TimePeriodEnum.d6);
+
+    const permStatus = await LocalNotifications.requestPermissions();
+
+    if (permStatus.display === 'granted') {
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: 'Powiadomienie tytuł',
+            body: 'To jest treść powiadomienia.',
+            id: 1,
+            schedule: { at: new Date(new Date().getTime() + 1000) }, // Po 1 sekundzie
+            sound: 'default',
+            actionTypeId: '',
+            extra: null
+          }
+        ]
       });
-    });  
+    } else {
+      console.log('Permission to receive notifications denied');
+    }
   }
 
+  setDataPeriod(period: string){
+    this.downloadChartsData(Number.parseInt(period));
+  }
+
+  downloadChartsData(period: TimePeriodEnum){
+    this.store.select(getTrackedPairs).pipe(
+      switchMap((pairs) => {
+        this.store.dispatch(getPriceChanges({ items: pairs, timePeriod: period }));        
+        return this.store.select(selectPriceChanges);
+      })
+    ).subscribe((p) => {
+      this.charts.next(this.convertToLineChartData(p));
+    });
+  }
 
   convertToLineChartData(data: Record<number, IPriceChanges[]>): ChartData[] {
     let mappedData = Object.entries(data).map(([key, value]) => {
@@ -121,85 +155,5 @@ export class DashboardComponent implements OnInit {
     return Math.floor(new Date(data).getTime() / 1000);
   }
 
-  // createCharts(data: ChartData) {
-  //     const chart = createChart(this.chartContainers.get(0)!.nativeElement, {
-  //       width: 800,
-  //       height: 400,
-  //       timeScale: {
-  //         timeVisible: true,
-  //         secondsVisible: true,
-  //         fixLeftEdge: true,
-  //         tickMarkFormatter: function (time: number) {
-  //           const date = new Date(time * 1000);
-  //           const day = String(date.getDate()).padStart(2, '0');
-  //           const month = String(date.getMonth() + 1).padStart(2, '0');
-  //           const year = date.getFullYear();
-  //           const hours = String(date.getUTCHours()).padStart(2, '0');
-  //           const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-  //           return `${day}.${month}.${year} ${hours}:${minutes}`;
-  //         },
-  //       },
-  //       rightPriceScale: {
-  //         borderColor: '#D1D4DC',
-  //       },
-  //       grid: {
-  //         vertLines: { color: '#E1ECF2' },
-  //         horzLines: { color: '#E1ECF2' },
-  //       },
-  //       crosshair: {
-  //         mode: CrosshairMode.Normal,
-  //       },
-  //     });
 
-  //     let lineSeries = chart.addSeries(LineSeries, {
-  //       priceScaleId: 'right',
-  //       lastValueVisible: true,
-  //       priceLineVisible: true,
-  //       crosshairMarkerVisible: true,
-  //     });
-
-  //     lineSeries.setData(data.data);
-  //     chart.timeScale().fitContent();   
-  // }
-
-  // createChart(data: LineData[]) {
-  //   let chart = createChart(this.chartContainer.nativeElement, {
-  //     width: this.chartContainer.nativeElement.clientWidth,
-  //     height: 400,
-  //     timeScale: {
-  //       timeVisible: true,
-  //       secondsVisible: true,
-  //       fixLeftEdge: true,
-  //       tickMarkFormatter: function (time: number) {
-  //         const date = new Date(time * 1000);
-  //         const day = String(date.getDate()).padStart(2, '0');
-  //         const month = String(date.getMonth() + 1).padStart(2, '0');
-  //         const year = date.getFullYear();
-  //         const hours = String(date.getUTCHours()).padStart(2, '0');
-  //         const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-  //         return `${day}.${month}.${year} ${hours}:${minutes}`;
-  //       },
-  //     },
-  //     rightPriceScale: {
-  //       borderColor: '#D1D4DC',
-  //     },
-  //     grid: {
-  //       vertLines: { color: '#E1ECF2' },
-  //       horzLines: { color: '#E1ECF2' },
-  //     },
-  //     crosshair: {
-  //       mode: CrosshairMode.Normal, // Normal crosshair mode
-  //     },
-  //   });
-
-  //   let lineSeries = chart.addSeries(LineSeries, {
-  //     priceScaleId: 'right',
-  //     lastValueVisible: true,
-  //     priceLineVisible: true,
-  //     crosshairMarkerVisible: true,
-  //   });
-
-  //   lineSeries.setData(data);
-  //   chart.timeScale().fitContent();
-  // }
 }

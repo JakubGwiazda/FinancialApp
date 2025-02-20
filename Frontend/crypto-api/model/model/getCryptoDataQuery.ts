@@ -9,9 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TimePeriod } from './timePeriod';
 
 
 export interface GetCryptoDataQuery { 
     trackedPairId?: number;
+    timePeriod?: TimePeriod;
 }
+export namespace GetCryptoDataQuery {
+}
+
 

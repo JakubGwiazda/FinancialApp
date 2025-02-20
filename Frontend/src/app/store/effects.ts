@@ -49,10 +49,10 @@ export class TrackerEffects {
   leadPriceChangesData = createEffect(() =>
     this.actions$.pipe(
       ofType(getPriceChanges),
-      exhaustMap(({ items }) =>
+      exhaustMap(({ items, timePeriod }) =>
         from(items).pipe(
           mergeMap((item) => 
-            this.cryptoService.getAvgPrices({ trackedPairId: item.id }).pipe(
+            this.cryptoService.getAvgPrices({ trackedPairId: item.id, timePeriod: timePeriod }).pipe(
               map((response) => {
                 let items = response.value!.map(p => 
                   ({

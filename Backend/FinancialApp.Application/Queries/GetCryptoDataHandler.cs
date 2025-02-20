@@ -4,6 +4,19 @@ using MediatR;
 
 namespace FinancialApp.Application.Queries
 {
+    public enum TimePeriod
+    {
+        h1 = 1,
+        h3 = 2,
+        h6 = 3,
+        h12 = 4,
+        d1 = 5,
+        d3 = 6,
+        d6 = 7,
+        d15 = 8,
+        d30 = 9,
+    }
+
     public class GetCryptoDataResponse
     {
         public string Name { get; set; }
@@ -15,6 +28,7 @@ namespace FinancialApp.Application.Queries
     public class GetCryptoDataQuery : IRequest<Result<List<GetCryptoDataResponse>>>
     {
         public int TrackedPairId { get; set; }
+        public TimePeriod TimePeriod { get; set; }
     }
 
     public class GetCryptoDataHandler : IRequestHandler<GetCryptoDataQuery, Result<List<GetCryptoDataResponse>>>
@@ -27,7 +41,7 @@ namespace FinancialApp.Application.Queries
 
         public async Task<Result<List<GetCryptoDataResponse>>> Handle(GetCryptoDataQuery query, CancellationToken cancellationToken)
         {
-            var records = await _repository.GetAvgPrices(query.TrackedPairId);
+            var records = await _repository.GetAvgPrices(query.TrackedPairId, query.TimePeriod);
             var data = records.Select(p => new GetCryptoDataResponse()
             {
                 Name = p.Name,

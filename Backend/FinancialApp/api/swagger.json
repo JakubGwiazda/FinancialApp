@@ -530,6 +530,9 @@
           "trackedPairId": {
             "type": "integer",
             "format": "int32"
+          },
+          "timePeriod": {
+            "$ref": "#/components/schemas/TimePeriod"
           }
         },
         "additionalProperties": false
@@ -822,6 +825,21 @@
           2,
           3,
           4
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "TimePeriod": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
         ],
         "type": "integer",
         "format": "int32"

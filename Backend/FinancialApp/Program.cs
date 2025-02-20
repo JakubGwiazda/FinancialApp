@@ -12,11 +12,20 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
+var baseUrl = builder.Configuration["ApiSettings:BaseUrl"];
+
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
+        builder
+               //.WithOrigins("http://localhost", "https://localhost", "capacitor://localhost")
+               .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader();
     });

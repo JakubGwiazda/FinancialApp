@@ -26,6 +26,7 @@ model/removeTrackedCryptoCmd.ts
 model/result.ts
 model/setAppSettingCmd.ts
 model/settingValueType.ts
+model/timePeriod.ts
 model/trackNewCryptoCmd.ts
 model/updateSettingCmd.ts
 model/updateTrackedPairCmd.ts

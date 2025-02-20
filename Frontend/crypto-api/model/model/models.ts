@@ -14,6 +14,7 @@ export * from './removeTrackedCryptoCmd';
 export * from './result';
 export * from './setAppSettingCmd';
 export * from './settingValueType';
+export * from './timePeriod';
 export * from './trackNewCryptoCmd';
 export * from './updateSettingCmd';
 export * from './updateTrackedPairCmd';
