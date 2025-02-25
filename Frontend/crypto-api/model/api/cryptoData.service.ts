@@ -21,7 +21,7 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { GetCryptoDataQuery } from '../model/getCryptoDataQuery';
 // @ts-ignore
-import { GetCryptoDataResponseListResult } from '../model/getCryptoDataResponseListResult';
+import { GetCryptoDataResponseResult } from '../model/getCryptoDataResponseResult';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,9 +98,9 @@ export class CryptoDataService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCryptoDataResponseListResult>;
-    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCryptoDataResponseListResult>>;
-    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCryptoDataResponseListResult>>;
+    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCryptoDataResponseResult>;
+    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCryptoDataResponseResult>>;
+    public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCryptoDataResponseResult>>;
     public getAvgPrices(getCryptoDataQuery?: GetCryptoDataQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,7 +148,7 @@ export class CryptoDataService {
         }
 
         let localVarPath = `/api/CryptoData/get-avg-prices`;
-        return this.httpClient.request<GetCryptoDataResponseListResult>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GetCryptoDataResponseResult>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: getCryptoDataQuery,

@@ -36,17 +36,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCryptoDataResponseListResult"
+                  "$ref": "#/components/schemas/GetCryptoDataResponseResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCryptoDataResponseListResult"
+                  "$ref": "#/components/schemas/GetCryptoDataResponseResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetCryptoDataResponseListResult"
+                  "$ref": "#/components/schemas/GetCryptoDataResponseResult"
                 }
               }
             }
@@ -540,27 +540,26 @@
       "GetCryptoDataResponse": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
           "priceChange": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "data": {
+          "name": {
             "type": "string",
-            "format": "date-time"
+            "nullable": true
+          },
+          "priceData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceInfo"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "GetCryptoDataResponseListResult": {
+      "GetCryptoDataResponseResult": {
         "type": "object",
         "properties": {
           "isFailed": {
@@ -596,20 +595,10 @@
             "readOnly": true
           },
           "valueOrDefault": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetCryptoDataResponse"
-            },
-            "nullable": true,
-            "readOnly": true
+            "$ref": "#/components/schemas/GetCryptoDataResponse"
           },
           "value": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GetCryptoDataResponse"
-            },
-            "nullable": true,
-            "readOnly": true
+            "$ref": "#/components/schemas/GetCryptoDataResponse"
           }
         },
         "additionalProperties": false
@@ -750,6 +739,20 @@
             },
             "nullable": true,
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceInfo": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "data": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

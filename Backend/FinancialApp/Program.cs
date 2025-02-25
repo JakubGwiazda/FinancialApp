@@ -1,3 +1,4 @@
+using FinancialApp.Infrastructure.Services;
 using Microsoft.OpenApi.Writers;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -24,7 +25,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(builder =>
     {
         builder
-               //.WithOrigins("http://localhost", "https://localhost", "capacitor://localhost")
+               .WithOrigins("http://192.168.0.13:4200", "https://localhost")
                .AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader();
@@ -55,7 +56,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors();
-
+app.MapHub<NotificationService>("/notificationService");
 /*app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(

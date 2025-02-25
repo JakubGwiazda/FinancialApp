@@ -24,21 +24,18 @@ export class SettingsTableComponent extends DynamicTableComponent<ISettingsTable
   settingsTableColumns : IColumnDefinition[] = [{
         columnDef:'name',
         header: 'Name', 
-        width: '50px',
         editable: false,
         cell: (item: GetAppSettingsResponse) => `${item?.name}`
       },
       {
         columnDef:'value',
         header: 'Settings value',
-        width: '50px',
         editable: true,
         cell: (item: GetAppSettingsResponse) => `${item?.value}`
       },
       {
         columnDef:'description',
         header: 'Description',
-        width: '200px',
         editable: true,
         cell: (item: GetAppSettingsResponse) => `${item?.description}`
       },

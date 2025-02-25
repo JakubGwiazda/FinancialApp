@@ -12,9 +12,9 @@ namespace FinancialApp.Controllers
     public class CryptoDataController : BaseController
     {
         [HttpPost("get-avg-prices", Name = "get-avg-prices")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetCryptoDataResponse>>), Description = "The crypto information has been retrieved.")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<GetCryptoDataResponse>), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
-        public async Task<Result<List<GetCryptoDataResponse>>> TrackNewCrypto(GetCryptoDataQuery cmd)
+        public async Task<Result<GetCryptoDataResponse>> TrackNewCrypto(GetCryptoDataQuery cmd)
         {
             return await Mediator.Send(cmd);
         }

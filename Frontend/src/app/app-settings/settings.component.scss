@@ -1,7 +1,25 @@
 @use '@angular/material' as mat;
 
 // Customize the entire app. Change :root to your selector if you want to scope the styles.
-::ng-deep .mat-header-cell,
-::ng-deep .mat-cell {
-  width: 50px; // change this value as needed
+// ::ng-deep .mat-header-cell,
+// ::ng-deep .mat-cell {
+//   width: 50px; // change this value as needed
+// }
+
+.form{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media (max-width: 400px) {
+  .form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+    scale: 0.9;
+  }
 }

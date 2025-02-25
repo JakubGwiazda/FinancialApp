@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private settingsService: SettingsService,
     public dialog: MatDialog,
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) {}
 
   cryptoSettings = new FormGroup({
@@ -44,6 +44,7 @@ export class SettingsComponent implements OnInit {
 
   settingsTableData: ISettingsTableData[] = [];
   trackedCryptoTableData: ITrackedPairs[] = [];
+  currentClasses: { [key: string]: boolean } = {};
 
   ngOnInit(): void {
     this.getAllSettings();
@@ -66,6 +67,7 @@ export class SettingsComponent implements OnInit {
         this.removeTrackedPair(event.item);
     }
   }
+
 
   handleSettingsAction(event: {
     item: ISettingsTableData;

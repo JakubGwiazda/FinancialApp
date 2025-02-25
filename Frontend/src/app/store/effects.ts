@@ -14,7 +14,7 @@ import {
   SettingsService,
 } from 'crypto-api/model';
 import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
-import { IPriceChanges } from './reducers';
+import { IPriceChanges, IPriceInfo } from './reducers';
 
 @Injectable()
 export class TrackerEffects {
@@ -51,22 +51,30 @@ export class TrackerEffects {
       ofType(getPriceChanges),
       exhaustMap(({ items, timePeriod }) =>
         from(items).pipe(
-          mergeMap((item) => 
-            this.cryptoService.getAvgPrices({ trackedPairId: item.id, timePeriod: timePeriod }).pipe(
-              map((response) => {
-                let items = response.value!.map(p => 
-                  ({
-                    cryptoName: p.name,
-                    price: p.price,
-                    priceChange: p.priceChange,
-                    data: p.data
-                  } as IPriceChanges))
-                return getPriceChangesSuccess({ id: item.id, items });
-              })
-            )
+          mergeMap((item) =>
+            this.cryptoService
+              .getAvgPrices({ trackedPairId: item.id, timePeriod: timePeriod })
+              .pipe(
+                map((response) => {
+                  let items = response.value!.priceData!.map(
+                    (p) =>
+                      ({
+                        price: p.price,
+                        data: p.data,
+                      } as IPriceInfo)
+                  );
+
+                  let data = {
+                    cryptoName: response.value?.name,
+                    priceChange: response.value?.priceChange,
+                    priceInfo: items,
+                  } as IPriceChanges;
+                  return getPriceChangesSuccess({ id: item.id, items: data });
+                })
+              )
           )
         )
       )
     )
-  )
-};
+  );
+}

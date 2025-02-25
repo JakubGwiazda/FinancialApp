@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PriceInfo } from './priceInfo';
 
 
-export interface GetCryptoDataResponse { 
-    priceChange?: number | null;
-    name?: string | null;
-    priceData?: Array<PriceInfo> | null;
+export interface PriceInfo { 
+    price?: number;
+    data?: string;
 }
 

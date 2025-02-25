@@ -16,22 +16,26 @@ namespace FinancialApp.Application.Queries
         d15 = 8,
         d30 = 9,
     }
-
-    public class GetCryptoDataResponse
+    public class PriceInfo
     {
-        public string Name { get; set; }
         public double Price { get; set; }
-        public double? PriceChange { get; set; }
         public DateTime Data { get; set; }
     }
 
-    public class GetCryptoDataQuery : IRequest<Result<List<GetCryptoDataResponse>>>
+    public class GetCryptoDataResponse
+    {
+        public double? PriceChange { get; set; }
+        public string Name { get; set; }
+        public List<PriceInfo> PriceData { get; set; }
+    }
+
+    public class GetCryptoDataQuery : IRequest<Result<GetCryptoDataResponse>>
     {
         public int TrackedPairId { get; set; }
         public TimePeriod TimePeriod { get; set; }
     }
 
-    public class GetCryptoDataHandler : IRequestHandler<GetCryptoDataQuery, Result<List<GetCryptoDataResponse>>>
+    public class GetCryptoDataHandler : IRequestHandler<GetCryptoDataQuery, Result<GetCryptoDataResponse>>
     {
         private ICryptoDataRepository _repository;
         public GetCryptoDataHandler(ICryptoDataRepository repository)
@@ -39,18 +43,30 @@ namespace FinancialApp.Application.Queries
             _repository = repository;
         }
 
-        public async Task<Result<List<GetCryptoDataResponse>>> Handle(GetCryptoDataQuery query, CancellationToken cancellationToken)
+        public async Task<Result<GetCryptoDataResponse>> Handle(GetCryptoDataQuery query, CancellationToken cancellationToken)
         {
             var records = await _repository.GetAvgPrices(query.TrackedPairId, query.TimePeriod);
-            var data = records.Select(p => new GetCryptoDataResponse()
+            var priceInfo = records.Select(p => new PriceInfo()
             {
-                Name = p.Name,
                 Price = p.Price,
-                PriceChange = p.PriceChange,
                 Data = p.CreateDate
             }).OrderBy(p => p.Data).ToList();
 
+            var data = new GetCryptoDataResponse()
+            {
+                Name = records.First().Name,
+                PriceChange = CalculatePriceChange(priceInfo),
+                PriceData = priceInfo
+            };           
+
             return Result.Ok(data);
+        }
+
+        private double CalculatePriceChange(List<PriceInfo> priceInfos) 
+        { 
+            var currentPrice = priceInfos.Last().Price;
+            var startingPrice = priceInfos.First().Price;
+            return ((currentPrice / startingPrice) * 100) - 100;
         }
     }
 

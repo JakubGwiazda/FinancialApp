@@ -39,6 +39,8 @@ import { ChartComponent } from './common/components/chart/chart.component';
 import { BASE_PATH } from 'crypto-api/model';
 import environment from '../environments/enviroment.json';
 import environmentProd from '../environments/enviroment.prod.json';
+import { MatSelectModule } from '@angular/material/select';
+import { NotificationService } from './services/notifications/notification-service.service';
 
 // export function apiConfigFactory (): Configuration {
 //   const params: ConfigurationParameters = {
@@ -82,6 +84,7 @@ import environmentProd from '../environments/enviroment.prod.json';
         MatHint,
         MatDialogModule,
         MatCheckboxModule,
+        MatSelectModule,
         DragDropModule,
         ChartComponent,
         StoreModule.forRoot({ cryptoState: itemsReducer }),
@@ -92,6 +95,7 @@ import environmentProd from '../environments/enviroment.prod.json';
         }),
       ],
     providers: [
+      NotificationService,
       provideHttpClient(withInterceptorsFromDi()),
       { provide: BASE_PATH, useValue: environmentProd.apiUrl }
     ] })

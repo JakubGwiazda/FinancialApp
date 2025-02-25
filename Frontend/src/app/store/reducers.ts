@@ -4,14 +4,18 @@ import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 
 export interface IPriceChanges{
     cryptoName: string;
-    price: number;
     priceChange: number;
-    data: string;
+    priceInfo: IPriceInfo[];
+}
+
+export interface IPriceInfo{
+  price: number;
+  data: string;
 }
 
 export interface ICryptoState {
     trackedPairs: ITrackedPairs[];
-    priceChanges: Record<number, IPriceChanges[]> ;
+    priceChanges: Record<number, IPriceChanges> ;
 }
 
 export const initialState: ICryptoState = {

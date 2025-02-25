@@ -12,7 +12,7 @@ import {
   ICandleData,
   ICryptoInfoData,
 } from '../common/interfaces/ICryptoInfoData';
-import { BehaviorSubject, Observable, map, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, debounceTime, map, of, switchMap, take, tap } from 'rxjs';
 import { CryptoDataService, SettingsService, TimePeriod } from 'crypto-api/model';
 import {
   createChart,
@@ -29,10 +29,13 @@ import { AppState } from '../store/state';
 import { IPriceChanges } from '../store/reducers';
 import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { FormControl } from '@angular/forms';
+import { NotificationService } from '../services/notifications/notification-service.service';
 
 export interface ChartData {
   id: number;
   title: string;
+  priceChange: number,
   data: LineData[];
 }
 
@@ -48,20 +51,24 @@ export class DashboardComponent implements OnInit {
   public infoCards: Observable<ICryptoInfoData[]> = of([]);
   private newWindow: Window | null = null;
   trackedPairs: ITrackedPairs[] = [];
-  timeRanges: Record<TimePeriodEnum,string>={
-    [TimePeriodEnum.h1]: '1 Hour',
-    [TimePeriodEnum.h3]: '3 Hours',
-    [TimePeriodEnum.h6]: '6 Hours',
-    [TimePeriodEnum.h12]: '12 Hours',
-    [TimePeriodEnum.d1]: '1 Day',
-    [TimePeriodEnum.d3]: '3 Days',
-    [TimePeriodEnum.d6]: '6 Days',
-    [TimePeriodEnum.d15]: '15 Days',
-    [TimePeriodEnum.d30]: '30 Days'
-  }
+
+  selectedTimeRange = new FormControl(TimePeriodEnum.d3);
+
+  timeRanges: {Key:number, Value:string}[] = [
+  { Key: TimePeriodEnum.h1, Value: '1 Hour'},
+  { Key: TimePeriodEnum.h3, Value: '3 Hours'},
+  { Key: TimePeriodEnum.h6, Value: '6 Hours'},
+  { Key: TimePeriodEnum.h12, Value: '12 Hours'},
+  { Key: TimePeriodEnum.d1, Value: '1 Day'},
+  { Key: TimePeriodEnum.d3, Value: '3 Days'},
+  { Key: TimePeriodEnum.d6, Value: '6 Days'},
+  { Key: TimePeriodEnum.d15, Value: '15 Days'},
+  { Key: TimePeriodEnum.d30, Value: '30 Days'}
+]
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    public notification: NotificationService
   ) {}
 
   setNewWindow(windowRef: Window) {
@@ -93,28 +100,17 @@ export class DashboardComponent implements OnInit {
   }
   
   async ngOnInit() {
+    await LocalNotifications.requestPermissions();
+    
     this.store.dispatch(getTrackedItems());
     this.downloadChartsData(TimePeriodEnum.d6);
 
-    const permStatus = await LocalNotifications.requestPermissions();
+    this.selectedTimeRange.valueChanges.pipe(
+      debounceTime(300)
+    )
+    .subscribe(value => this.downloadChartsData(value!))
 
-    if (permStatus.display === 'granted') {
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            title: 'Powiadomienie tytuł',
-            body: 'To jest treść powiadomienia.',
-            id: 1,
-            schedule: { at: new Date(new Date().getTime() + 1000) }, // Po 1 sekundzie
-            sound: 'default',
-            actionTypeId: '',
-            extra: null
-          }
-        ]
-      });
-    } else {
-      console.log('Permission to receive notifications denied');
-    }
+
   }
 
   setDataPeriod(period: string){
@@ -132,9 +128,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  convertToLineChartData(data: Record<number, IPriceChanges[]>): ChartData[] {
+  convertToLineChartData(data: Record<number, IPriceChanges>): ChartData[] {
     let mappedData = Object.entries(data).map(([key, value]) => {
-      let chartData = value.map(
+      let chartData = value.priceInfo.map(
         (p) =>
           ({
             value: p.price,
@@ -144,7 +140,8 @@ export class DashboardComponent implements OnInit {
       let returnData = {
         id: Number(key),
         data: chartData,
-        title: value.at(0)?.cryptoName,
+        title: value.cryptoName,
+        priceChange: value.priceChange
       } as ChartData;
       return returnData;
     });
@@ -154,6 +151,4 @@ export class DashboardComponent implements OnInit {
   convertDataToUNIXSeconds(data: string): number {
     return Math.floor(new Date(data).getTime() / 1000);
   }
-
-
 }

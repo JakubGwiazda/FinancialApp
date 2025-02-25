@@ -36,6 +36,7 @@ export class TrackedPairTableComponent  extends DynamicTableComponent<ITrackedPa
     columnDef:'action',
     header: 'Action',
     editable: false,
+    width: '10vw',
     actions:[
       {
         label:'Delete',

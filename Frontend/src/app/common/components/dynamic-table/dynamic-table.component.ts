@@ -1,17 +1,16 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, output, SimpleChanges } from '@angular/core';
 import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig';
-import { DataService } from 'src/app/services/event-bus.service';
 
 @Component({
   selector: 'app-dynamic-table',
-  template: `
-<table mat-table [dataSource]="tableData.dataSource" >
+  template: `<div class="table-container">
+<table mat-table [dataSource]="tableData.dataSource">
   @for (column of tableData.columns; track column) {
     <ng-container [matColumnDef]="column.columnDef">
-      <th mat-header-cell *matHeaderCellDef>
+      <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
         {{column.header}}
       </th>
-      <td mat-cell *matCellDef="let row">
+      <td mat-cell *matCellDef="let row" [style.width]="column.width">
         <ng-container *ngIf="column.cell; else actionButton">
           {{ column?.cell(row) }}
         </ng-container>
@@ -27,6 +26,7 @@ import { DataService } from 'src/app/services/event-bus.service';
       <td class="mat-cell" colspan="4">No data matching the filter</td>
   </tr>
 </table>
+</div>
 `,
   styleUrl: './dynamic-table.component.scss',
   standalone: false

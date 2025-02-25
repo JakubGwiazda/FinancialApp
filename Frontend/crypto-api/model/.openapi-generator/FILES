@@ -15,13 +15,14 @@ model/getAppSettingsResponse.ts
 model/getAppSettingsResponseListResult.ts
 model/getCryptoDataQuery.ts
 model/getCryptoDataResponse.ts
-model/getCryptoDataResponseListResult.ts
+model/getCryptoDataResponseResult.ts
 model/getTrackedCryptoResponse.ts
 model/getTrackedCryptoResponseListResult.ts
 model/iError.ts
 model/iReason.ts
 model/iSuccess.ts
 model/models.ts
+model/priceInfo.ts
 model/removeTrackedCryptoCmd.ts
 model/result.ts
 model/setAppSettingCmd.ts

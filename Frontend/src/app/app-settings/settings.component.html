@@ -1,9 +1,9 @@
 <form
   [formGroup]="cryptoSettings"
   (ngSubmit)="onSubmit()"
-  class="w-50 d-flex justify-content-around"
->
-  <mat-form-field>
+  class="form mb-5"
+><div  class="mt-4">
+  <mat-form-field class="me-5">
     <mat-label>Crypto Symbol</mat-label>
     <input
       matInput
@@ -17,8 +17,11 @@
     <input matInput formControlName="currency" placeholder="Ex. USDT, PLN" />
     <mat-hint align="start">Official currency</mat-hint>
   </mat-form-field>
+</div>
+  <div class="mt-4">
   <mat-checkbox formControlName="collectData">Collect data</mat-checkbox>
   <button
+  class="ms-5"
     mat-flat-button
     color="primary"
     type="submit"
@@ -26,10 +29,10 @@
   >
     Add tracker
   </button>
+</div>
 </form>
-
-<app-tracked-pair-table
+<app-tracked-pair-table class="table"
   (action)="handleAction($event)"
   [data]="trackedCryptoTableData"
 ></app-tracked-pair-table>
-<app-settings-table [data]="settingsTableData"   (action)="handleSettingsAction($event)"></app-settings-table>
+  <app-settings-table class="table" [data]="settingsTableData"   (action)="handleSettingsAction($event)"></app-settings-table>

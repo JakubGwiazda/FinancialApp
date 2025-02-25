@@ -22,6 +22,6 @@ export const getPriceChanges = createAction(
 
 export const getPriceChangesSuccess = createAction(
     'GetPriceChangesSuccess',
-    props<{ id: number, items: IPriceChanges[] }>()
+    props<{ id: number, items: IPriceChanges }>()
   );
  

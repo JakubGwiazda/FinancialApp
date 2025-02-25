@@ -10,5 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 export class SimpleCardComponent {
 
 @Input() title!: string;
+@Input() priceChange!: number;
 
 }

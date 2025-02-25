@@ -18,6 +18,7 @@ public static class ConfigurationServices
         services.AddDbContext<BaseContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("FinancialDatabase")));
         services.AddHostedService<RequestWorker>();
+        services.AddSignalR();
 
         return services;
     }
