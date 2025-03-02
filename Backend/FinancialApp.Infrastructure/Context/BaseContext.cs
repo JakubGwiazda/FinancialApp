@@ -20,6 +20,8 @@ namespace CryptoInfo.Infrastructure.Context
         public DbSet<CryptoData> CryptoData { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
         public DbSet<TrackedCryptocurrencies> TrackedCryptocurrencies { get; set; }
+        public DbSet<RegisteredDevices> RegisteredDevices { get; set; }
+               
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

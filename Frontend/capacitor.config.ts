@@ -7,7 +7,11 @@ const config: CapacitorConfig = {
   android:{
   zoomEnabled: false,
   },
-  
+  plugins: {
+    FirebaseMessaging: {
+      presentationOptions: ["alert", "badge", "sound"],
+    },
+  },
   server: {
     url:'http://192.168.0.13:4200/dashboard'
     cleartext: true,

@@ -92,7 +92,7 @@ import { NotificationService } from './services/notifications/notification-servi
         SimpleCardComponent,
         StoreDevtoolsModule.instrument({
           maxAge: 25,
-        }),
+        })
       ],
     providers: [
       NotificationService,

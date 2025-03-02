@@ -21,7 +21,7 @@ namespace FinancialApp.Application.Commands
 
         public async Task<Result> Handle(TrackNewCryptoCmd request, CancellationToken cancellationToken)
         {
-            var a = await _cryptoCurrenciesSettingsRepository.AddNewRecord(new TrackedCryptocurrencies {
+            await _cryptoCurrenciesSettingsRepository.AddNewRecord(new TrackedCryptocurrencies {
                 Name = request.CryptoSymbol.ToUpper(), 
                 ReferenceCurrencyName = request.FiatSymbol.ToUpper(),
                 CollectData = request.CollectData

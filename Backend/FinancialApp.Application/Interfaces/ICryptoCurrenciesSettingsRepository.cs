@@ -9,5 +9,6 @@ namespace FinancialApp.Application.Interfaces
         Task<Result> UpdateRecord(UpdateTrackedPairCmd request, TrackedCryptocurrencies data);
         Task<Result> UpdateRecord(UpdateSettingCmd request, AppSettings data);
         Task<CryptoData> GetLastCryptoUpdate(int id);
+        Task<List<CryptoData>> GetLastResults(int trackedCryptoId, int numberOfResults);
     }
 }

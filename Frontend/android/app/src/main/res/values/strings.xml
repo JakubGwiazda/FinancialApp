@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">MyFinances</string>
-    <string name="title_activity_main">MyFinances</string>
-    <string name="package_name">myfinances.test.com</string>
-    <string name="custom_url_scheme">myfinances.test.com</string>
+    <string name="app_name">YourApp</string>
+    <string name="title_activity_main">YourApp</string>
+    <string name="package_name">com.yourapp.mobile</string>
+    <string name="custom_url_scheme">com.yourapp.mobile</string>
 </resources>

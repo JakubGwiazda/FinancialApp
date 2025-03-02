@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/cryptoData.service.ts
+api/notification.service.ts
 api/settings.service.ts
 api/weatherForecast.service.ts
 configuration.ts
@@ -21,14 +22,18 @@ model/getTrackedCryptoResponseListResult.ts
 model/iError.ts
 model/iReason.ts
 model/iSuccess.ts
+model/messageRequest.ts
 model/models.ts
 model/priceInfo.ts
+model/registerDeviceCmd.ts
+model/removeDeviceCmd.ts
 model/removeTrackedCryptoCmd.ts
 model/result.ts
 model/setAppSettingCmd.ts
 model/settingValueType.ts
 model/timePeriod.ts
 model/trackNewCryptoCmd.ts
+model/updateDeviceCmd.ts
 model/updateSettingCmd.ts
 model/updateTrackedPairCmd.ts
 model/weatherForecast.ts

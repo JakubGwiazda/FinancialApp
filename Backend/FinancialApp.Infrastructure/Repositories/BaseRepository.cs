@@ -1,18 +1,16 @@
 ﻿using CryptoInfo.Infrastructure.Context;
-using FinancialApp.Application.Commands;
 using FinancialApp.Application.Interfaces;
-using FinancialApp.Domain;
 using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Xml.Linq;
 
 namespace FinancialApp.Infrastructure.Repositories
 {
-    internal class CryptoCurrenciesSettingsRepository : ICryptoCurrenciesSettingsRepository
+    internal abstract class BaseRepository : IBaseRepositoryOperation
     {
-        private BaseContext _baseContext { get; }
-        public CryptoCurrenciesSettingsRepository(BaseContext baseContext)
+        protected BaseContext _baseContext { get; }
+
+        public BaseRepository(BaseContext baseContext)
         {
             _baseContext = baseContext;
         }
@@ -78,49 +76,9 @@ namespace FinancialApp.Infrastructure.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Result> UpdateRecord(UpdateTrackedPairCmd request,  TrackedCryptocurrencies data)
-        {
-            try
-            {
-                data.CollectData = request.CollectData;
-                await _baseContext.SaveChangesAsync();
-
-                return Result.Ok();                
-            }
-            catch (Exception)
-            {
-                return Result.Fail("Update entity was not successful");
-            }
-        }
-
         public async Task SaveChangesAsync()
         {
             await _baseContext.SaveChangesAsync();
-        }
-
-        public async Task<CryptoData> GetLastCryptoUpdate(int id)
-        {
-            return await _baseContext.CryptoData.Where(p => p.TrackedCryptocurrencyId == id).OrderByDescending(p => p.CreateDate).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<CryptoData>> GetLastResults(int trackedCryptoId, int numberOfResults)
-        {
-            return await _baseContext.CryptoData.Where(p => p.TrackedCryptocurrencyId == trackedCryptoId).OrderByDescending(p => p.CreateDate).Take(numberOfResults).ToListAsync();
-        }
-
-        public async Task<Result> UpdateRecord(UpdateSettingCmd request, AppSettings data)
-        {
-            try
-            {
-                data.Value = request.Value;
-                await _baseContext.SaveChangesAsync();
-
-                return Result.Ok();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
     }
 }
