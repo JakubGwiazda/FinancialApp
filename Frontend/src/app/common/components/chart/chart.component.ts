@@ -60,7 +60,7 @@ export class ChartComponent implements OnChanges{
     const resizeChart = () => {
       chart.resize(
         this.chartContainer.nativeElement.clientWidth,
-        Math.min(window.innerHeight * 0.5, 400)  // Maksymalnie 50% wysokości ekranu lub 400px
+        Math.min(window.innerHeight * 0.5, 400)
       );
     };
 

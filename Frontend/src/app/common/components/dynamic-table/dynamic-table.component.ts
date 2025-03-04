@@ -1,45 +1,77 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, output, SimpleChanges } from '@angular/core';
-import { ITableDefinition, OperationKind } from '../../interfaces/IColumnConfig';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  ITableDefinition,
+  OperationKind,
+} from '../../interfaces/IColumnConfig';
 
 @Component({
   selector: 'app-dynamic-table',
   template: `<div class="table-container">
-<table mat-table [dataSource]="tableData.dataSource">
-  @for (column of tableData.columns; track column) {
-    <ng-container [matColumnDef]="column.columnDef">
-      <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
-        {{column.header}}
-      </th>
-      <td mat-cell *matCellDef="let row" [style.width]="column.width">
-        <ng-container *ngIf="column.cell; else actionButton">
-          {{ column?.cell(row) }}
-        </ng-container>
-        <ng-template #actionButton>
-            <button *ngFor="let action of column.actions" mat-button (click)="onActionClick(row, action.operationKind)">{{action.label}}</button>
-        </ng-template>
-      </td>      
-    </ng-container>
-  }
-  <tr mat-header-row *matHeaderRowDef="tableData.displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: tableData.displayedColumns;"></tr>
-  <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter</td>
-  </tr>
-</table>
-</div>
-`,
+    <table class="custom-table">
+      <thead>
+        <tr>
+          @for (column of tableData.columns; track $index) {
+          <th [style.width]="column.width">
+            {{ column.header }}
+          </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of tableData.dataSource; track $index){
+        <tr>
+          @for (column of tableData.columns; track $index) {
+          <td [style.width]="column.width">
+            <ng-container *ngIf="column.cell; else actionButton">
+              {{ column?.cell(row) }}
+            </ng-container>
+            <ng-template #actionButton>
+              <button mat-button
+                *ngFor="let action of column.actions"
+                (click)="onActionClick(row, action.operationKind)"
+              >
+                <img [src]="action.icon" />
+              </button>
+            </ng-template>
+          </td>
+          }
+        </tr>
+        }
+      </tbody>
+      <tfoot *ngIf="!tableData.dataSource.length">
+        <tr class="no-data">
+          <td colspan="4">No data matching the filter</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div> `,
   styleUrl: './dynamic-table.component.scss',
-  standalone: false
+  standalone: false,
 })
-
-export class DynamicTableComponent<T>{
+export class DynamicTableComponent<T> {
   @Input() tableData!: ITableDefinition<T>;
-  @Output() itemAction = new EventEmitter<{ item: T, operationKind: OperationKind, dataType: string }>();
+  @Output() itemAction = new EventEmitter<{
+    item: T;
+    operationKind: OperationKind;
+    dataType: string;
+  }>();
 
-  constructor(){}
+  constructor() {}
 
   onActionClick(item: T, operationKind: OperationKind) {
-    this.itemAction.emit({item, operationKind, dataType: this.tableData.dataType})
+    this.itemAction.emit({
+      item,
+      operationKind,
+      dataType: this.tableData.dataType,
+    });
   }
-
 }

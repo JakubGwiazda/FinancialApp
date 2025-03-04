@@ -14,6 +14,7 @@ import {
   OperationKind,
 } from '../common/interfaces/IColumnConfig';
 import { EditModalComponent } from './tables/tracked-pair-table/modals/edit-modal/edit-modal.component';
+import { DeleteModalComponent } from './tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISettingsTableData } from './tables/settings-table/settings-table.component';
 import { filter, switchMap } from 'rxjs';
@@ -127,11 +128,20 @@ export class SettingsComponent implements OnInit {
       });
   }
 
-  removeTrackedPair(item: GetTrackedCryptoResponse) {
-    this.settingsService.removeTracker({id: item.id})
-    .subscribe((res) => {
-      this.getAllTrackedPairs();
+  removeTrackedPair(item: ITrackedPairs) {
+    const dialogRef = this.dialog.open<DeleteModalComponent, { item: ITrackedPairs }, ITrackedPairs>(DeleteModalComponent, {
+      data: {item},
     });
+
+    dialogRef.afterClosed()
+    .pipe(      
+      filter(data => !!data),
+      switchMap(data => this.settingsService.removeTracker({
+        id: data?.id
+      })))
+    .subscribe(() =>{
+      this.getAllSettings();
+    })
   }
 
   getAllTrackedPairs(){

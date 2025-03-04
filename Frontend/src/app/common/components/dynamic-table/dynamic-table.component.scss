@@ -1,15 +1,17 @@
-::ng-deep .mat-mdc-table{
-    min-width: 0 !important;
-}
-
 .table-container{
     display: flex;
     justify-content: center;
     align-items: center;
+    word-break: break-word;
 }
 
 @media (max-width: 400px) {
     table{
       scale: 0.85;
     }  
+}
+
+td, th{
+  padding: 5px;
+  text-align: center;
 }

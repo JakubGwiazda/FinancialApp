@@ -12,7 +12,6 @@ namespace FinancialApp.Infrastructure.Workers
     internal class RequestWorker : BackgroundService
     {
         private readonly HttpClient _httpClient;
-        //private const string apiUrl = "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT";
         private const string apiUrl = "https://api.binance.com/api/v3/avgPrice?symbol=";
         private readonly IServiceScopeFactory _scopeFactory;
         private BinanceClient _client;
@@ -25,8 +24,6 @@ namespace FinancialApp.Infrastructure.Workers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 int breakBetweenRequests = 60; 
@@ -37,7 +34,12 @@ namespace FinancialApp.Infrastructure.Workers
                     var fcmService = scope.ServiceProvider.GetRequiredService<IFcmService>();
                     var trackedData = await repository.GetAllRecords<TrackedCryptocurrencies>(p => p.CollectData);
                     var requestSettings = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.RequestFrequency.ToString());
+                    var priceChangeOver = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.PriceChangeOver.ToString());
+                    var numberOfResultsToCheckPriceChange = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.NumberOfResultsToCheckPriceChange.ToString());
+
                     breakBetweenRequests = TypesConverter.ConvertToType<int>(requestSettings.Value, requestSettings.ValueType);
+                    var notificationTriggeredLevel = TypesConverter.ConvertToType<int>(priceChangeOver.Value, priceChangeOver.ValueType);
+                    var numberOfRecordsToCheck = TypesConverter.ConvertToType<int>(numberOfResultsToCheckPriceChange.Value, numberOfResultsToCheckPriceChange.ValueType);
 
                     try
                     {
@@ -57,9 +59,9 @@ namespace FinancialApp.Infrastructure.Workers
                             });
                             await repository.SaveChangesAsync();
 
-                            var lastResults = await repository.GetLastResults(record.Id, 4);
-
-                            if (CheckDifference(lastResults) > 5 || CheckDifference(lastResults) < -3)
+                            var lastResults = await repository.GetLastResults(record.Id, numberOfRecordsToCheck);
+                            
+                            if (Math.Abs(CheckDifference(lastResults)) > notificationTriggeredLevel)
                             {
                                 await fcmService.SendNotificationAsync("Price changes!", $"Pair: {symbol} changed price over setting limit");
                             }
@@ -72,7 +74,7 @@ namespace FinancialApp.Infrastructure.Workers
                     }
                 }
                 
-                await Task.Delay(TimeSpan.FromSeconds(breakBetweenRequests), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(breakBetweenRequests), stoppingToken);
             }
 
         }

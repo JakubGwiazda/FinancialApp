@@ -25,28 +25,33 @@ export class SettingsTableComponent extends DynamicTableComponent<ISettingsTable
         columnDef:'name',
         header: 'Name', 
         editable: false,
+        width:'20vw',
         cell: (item: GetAppSettingsResponse) => `${item?.name}`
       },
       {
         columnDef:'value',
-        header: 'Settings value',
+        header: 'Value',
         editable: true,
+        width: '15vw',
         cell: (item: GetAppSettingsResponse) => `${item?.value}`
       },
       {
         columnDef:'description',
         header: 'Description',
         editable: true,
+        width:'45vw',
         cell: (item: GetAppSettingsResponse) => `${item?.description}`
       },
       {
           columnDef:'action',
-          header: 'Action',
+          header: '',
           editable: false,
+          width: '5vw',
           actions:[
             {
               label:'Update',
-              operationKind: OperationKind.Update
+              operationKind: OperationKind.Update,
+              icon: 'assets/icons/edit.svg'
             }
           ]
         },

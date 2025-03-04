@@ -34,17 +34,19 @@ export class TrackedPairTableComponent  extends DynamicTableComponent<ITrackedPa
   },
   {
     columnDef:'action',
-    header: 'Action',
+    header: '',
     editable: false,
     width: '10vw',
     actions:[
       {
         label:'Delete',
-        operationKind: OperationKind.Remove
+        operationKind: OperationKind.Remove,
+        icon: 'assets/icons/remove.svg'
       },
       {
         label:'Update',
-        operationKind: OperationKind.Update
+        operationKind: OperationKind.Update,
+        icon: 'assets/icons/edit.svg'
       }
     ]
   },

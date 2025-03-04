@@ -13,7 +13,8 @@ export interface IColumnDefinition{
   cell?: (element: any) => string;
   actions?: { 
     label: string;
-    operationKind: OperationKind 
+    operationKind: OperationKind; 
+    icon: string;
   }[];
 }
 

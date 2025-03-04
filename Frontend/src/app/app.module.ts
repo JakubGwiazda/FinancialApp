@@ -41,6 +41,7 @@ import environment from '../environments/enviroment.json';
 import environmentProd from '../environments/enviroment.prod.json';
 import { MatSelectModule } from '@angular/material/select';
 import { NotificationService } from './services/notifications/notification-service.service';
+import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
 
 // export function apiConfigFactory (): Configuration {
 //   const params: ConfigurationParameters = {
@@ -62,6 +63,7 @@ import { NotificationService } from './services/notifications/notification-servi
         SettingsTableComponent,
         TrackedPairTableComponent,
         EditSettingModalComponent,
+        DeleteModalComponent,
         DraggableWindowComponent
     ],
     bootstrap: [AppComponent], 
