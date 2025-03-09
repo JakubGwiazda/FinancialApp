@@ -1,4 +1,4 @@
-﻿namespace FinancialApp.Infrastructure.ExternalApiClients.Models.Firebase
+﻿namespace NotificationService.Infrastructure.Models
 {
     public class MessageRequest
     {

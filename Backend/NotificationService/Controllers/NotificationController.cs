@@ -1,19 +1,21 @@
 ﻿using FinancialApp.Application.Commands.Notifications;
-using FinancialApp.Infrastructure.Services;
-using FinancialApp.Infrastructure.Services.FirebaseService;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
+using NotificationService.Application.Commands;
+using NotificationService.Infrastructure.Models;
+using NotificationService.Infrastructure.Services.FirebaseService;
 using NSwag.Annotations;
 using System.Net;
 
-namespace FinancialApp.Controllers
+namespace NotificationService.Controllers
 {
     public class NotificationController : BaseController
     {
+        private readonly IFirebaseService _service;
 
-        public NotificationController()
+        public NotificationController(IFirebaseService service)
         {
+            _service = service;
         }
 
         [HttpPost("register-device", Name = "register-device")]

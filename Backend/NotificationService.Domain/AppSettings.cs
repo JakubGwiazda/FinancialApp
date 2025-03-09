@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NotificationService.Domain
+{
+    [Table("AppSettings")]
+    public class AppSettings
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public SettingValueType ValueType { get; set; }
+        public string Value { get; set; }
+        public string Description { get; set; }
+    }
+}

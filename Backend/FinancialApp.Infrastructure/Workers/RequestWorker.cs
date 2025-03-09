@@ -3,9 +3,12 @@ using FinancialApp.Domain;
 using FinancialApp.Infrastructure.Common.Enums;
 using FinancialApp.Infrastructure.Common.Helpers;
 using FinancialApp.Infrastructure.ExternalApiClients;
+using FinancialApp.Infrastructure.Services;
 using FinancialApp.Infrastructure.Services.FirebaseService;
+using FinancialApp.Infrastructure.Workers.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
 
 namespace FinancialApp.Infrastructure.Workers
 {
@@ -15,17 +18,20 @@ namespace FinancialApp.Infrastructure.Workers
         private const string apiUrl = "https://api.binance.com/api/v3/avgPrice?symbol=";
         private readonly IServiceScopeFactory _scopeFactory;
         private BinanceClient _client;
-        public RequestWorker(IServiceScopeFactory scopeFactory)
+        private readonly IRabbitMQProducer _notificationProducer;
+        public RequestWorker(IServiceScopeFactory scopeFactory, IRabbitMQProducer rabbitMQProducer)
         {
             _httpClient = new HttpClient();
             _scopeFactory = scopeFactory;
             _client = new BinanceClient();
+            _notificationProducer = rabbitMQProducer;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+
                 int breakBetweenRequests = 60; 
 
                 using (var scope = _scopeFactory.CreateScope())
@@ -63,7 +69,8 @@ namespace FinancialApp.Infrastructure.Workers
                             
                             if (Math.Abs(CheckDifference(lastResults)) > notificationTriggeredLevel)
                             {
-                                await fcmService.SendNotificationAsync("Price changes!", $"Pair: {symbol} changed price over setting limit");
+                                var message = new MessageRequest() { Title = "Price changes!", Body = $"Pair: {symbol} changed price over setting limit" };
+                                _notificationProducer.PublishNotification(JsonSerializer.Serialize(message));
                             }
                         }
 
@@ -74,7 +81,7 @@ namespace FinancialApp.Infrastructure.Workers
                     }
                 }
                 
-                await Task.Delay(TimeSpan.FromMinutes(breakBetweenRequests), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(breakBetweenRequests), stoppingToken);
             }
 
         }
