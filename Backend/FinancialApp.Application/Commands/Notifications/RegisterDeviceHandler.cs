@@ -19,7 +19,13 @@ namespace FinancialApp.Application.Commands.Notifications
 
         public async Task<Result> Handle(RegisterDeviceCmd cmd, CancellationToken cancellationToken)
         {
-            await _repository.AddNewRecord(new RegisteredDevices() { Token = cmd.Token, CreateDate = DateTime.Now });
+
+            var isDeviceRegistered = await _repository.GetRecord<RegisteredDevices>(p => p.Token == cmd.Token);
+
+            if (isDeviceRegistered == null) {
+                await _repository.AddNewRecord(new RegisteredDevices() { Token = cmd.Token, CreateDate = DateTime.Now });
+            }
+
             return Result.Ok();
         }
     }
