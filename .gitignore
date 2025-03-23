@@ -13,6 +13,8 @@
 *.db-wal
 *.prod.json
 firebasePrivateKey.json
+Frontend/crypto-api/model/
+Backend/letsencrypt/
 
 google-services.json
 # User-specific files (MonoDevelop/Xamarin Studio)

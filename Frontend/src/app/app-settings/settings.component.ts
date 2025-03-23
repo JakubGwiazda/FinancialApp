@@ -4,12 +4,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  GetTrackedCryptoResponse,
-  SettingsService,
-  TrackNewCryptoCmd,
-  UpdateTrackedPairCmd,
-} from 'crypto-api/model';
+
 import {
   OperationKind,
 } from '../common/interfaces/IColumnConfig';
@@ -23,6 +18,7 @@ import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/state';
 import { getTrackedPairs } from '../store/selectors';
+import { SettingsService } from 'crypto-api/model/financial';
 
 @Component({
   selector: 'settings',

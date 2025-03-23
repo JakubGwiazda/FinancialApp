@@ -11,6 +11,13 @@ namespace FinancialApp.Controllers
 {
     public class SettingsController : BaseController
     {
+        [HttpGet("get-settings", Name = "get-settings")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetAppSettingsResponse>>), Description = "The crypto information has been retrieved.")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
+        public async Task<Result<List<GetAppSettingsResponse>>> SetSetting()
+        {
+            return await Mediator.Send(new GetAppSettingsQuery());
+        }
 
         [HttpPost("add-tracker", Name = "add-tracker")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
@@ -36,14 +43,6 @@ namespace FinancialApp.Controllers
         public async Task<Result> SetSetting(SetAppSettingCmd cmd)
         {
             return await Mediator.Send(cmd);
-        }
-
-        [HttpGet("get-settings", Name = "get-settings")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetAppSettingsResponse>>), Description = "The crypto information has been retrieved.")]
-        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
-        public async Task<Result<List<GetAppSettingsResponse>>> SetSetting()
-        {
-            return await Mediator.Send(new GetAppSettingsQuery());
         }
 
         [HttpPost("remove-tracker", Name = "remove-tracker")]

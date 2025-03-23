@@ -14,8 +14,10 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDbContext<BaseContext>(options => options.UseSqlite(configuration.GetConnectionString("FinancialDatabase")));
+    {      
+
+        services.AddDbContext<BaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("NotificationDatabase")));
+
         services.AddScoped<IFirebaseService, FirebaseService>();
         services.AddHostedService(serviceProvider =>
         {

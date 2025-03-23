@@ -30,7 +30,7 @@ namespace FinancialApp.Infrastructure.Services
             {
                 HostName = configuration["RabbitMQ:Host"],
                 UserName = configuration["RabbitMQ:Username"],
-                Password = configuration["RabbitMQ:Password"]
+                Password = configuration["RabbitMQ:Password"],
             };
             instance._queueName = configuration["RabbitMQ:QueueName"];
             instance._connection = await factory.CreateConnectionAsync();

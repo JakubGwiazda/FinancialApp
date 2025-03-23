@@ -30,19 +30,15 @@ namespace CryptoInfo.Infrastructure.Context
                 .HasConversion<string>();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+/*        protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            if (!options.IsConfigured)
+            var connectionString = _configuration.GetConnectionString("FinancialDatabase");
+            if (string.IsNullOrEmpty(connectionString))
             {
-                var connectionString = _configuration?.GetConnectionString("FinancialDatabase") ?? "Data Source=../Database/FinancialDb.db";
-
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    throw new InvalidOperationException("Database connection string is missing.");
-                }
-
-                options.UseSqlite(connectionString);
+                throw new InvalidOperationException("The ConnectionString property has not been initialized.");
             }
-        }
+
+            options.UseNpgsql(connectionString);
+        }*/
     }
 }

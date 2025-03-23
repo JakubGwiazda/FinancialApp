@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseMessaging } from '@capacitor-firebase/messaging';
-import { NotificationService } from 'crypto-api/model';
 import { NotificationService as LocalNotifications } from './services/notifications/notification-service.service';
+import { NotificationService } from 'crypto-api/model/notification';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',

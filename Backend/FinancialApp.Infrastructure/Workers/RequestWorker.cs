@@ -4,7 +4,6 @@ using FinancialApp.Infrastructure.Common.Enums;
 using FinancialApp.Infrastructure.Common.Helpers;
 using FinancialApp.Infrastructure.ExternalApiClients;
 using FinancialApp.Infrastructure.Services;
-using FinancialApp.Infrastructure.Services.FirebaseService;
 using FinancialApp.Infrastructure.Workers.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,7 +36,6 @@ namespace FinancialApp.Infrastructure.Workers
                 using (var scope = _scopeFactory.CreateScope())
                 {
                     var repository = scope.ServiceProvider.GetRequiredService<ICryptoCurrenciesSettingsRepository>();
-                    var fcmService = scope.ServiceProvider.GetRequiredService<IFcmService>();
                     var trackedData = await repository.GetAllRecords<TrackedCryptocurrencies>(p => p.CollectData);
                     var requestSettings = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.RequestFrequency.ToString());
                     var priceChangeOver = await repository.GetRecord<AppSettings>(p => p.Name == SettingType.PriceChangeOver.ToString());

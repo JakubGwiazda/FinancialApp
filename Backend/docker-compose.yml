@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.insecure=true"
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+    networks:
+      - financial-app-net
+
+  rabbitmq: 
+    image: rabbitmq:4-management
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
+    ports:
+      - "5672:5672"
+    networks:
+      - financial-app-net
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  financial-db:
+    image: postgres:latest
+    container_name: financial-db
+    restart: always
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: ${FINANCIAL_DB_PASSWORD}
+      POSTGRES_DB: FinancialDb
+    volumes:
+      - financial_db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - financial-app-net
+
+  notification-db:
+    image: postgres:latest
+    container_name: notification-db
+    restart: always
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: ${NOTIFICATION_DB_PASSWORD}
+      POSTGRES_DB: NotificationDB
+    volumes:
+      - notification_db_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - financial-app-net
+
+  financial-app:
+    build:
+      context: .
+      dockerfile: FinancialApp/Dockerfile
+    container_name: financial-app
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:5113
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.financial-app.rule= PathPrefix(`/financial`)"
+      - "traefik.http.routers.financial-app.entrypoints=web"
+      - "traefik.http.services.financial-app.loadbalancer.server.port=5113"
+    networks:
+      - financial-app-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+    container_name: notification-service
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:5102
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notification-service.rule= PathPrefix(`/notification`)"
+      - "traefik.http.routers.notification-service.entrypoints=web"
+      - "traefik.http.services.notification-service.loadbalancer.server.port=5102"
+    networks:
+      - financial-app-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+networks:
+  financial-app-net:
+    driver: bridge
+
+volumes:
+  financial_db_data:
+  notification_db_data:

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { GetAppSettingsResponse, SettingValueType } from 'crypto-api/model';
+import { GetAppSettingsResponse, SettingValueType } from 'crypto-api/model/financial';
 import { DynamicTableComponent } from 'src/app/common/components/dynamic-table/dynamic-table.component';
 import { IColumnDefinition, ITableDefinition, OperationKind } from 'src/app/common/interfaces/IColumnConfig';
 

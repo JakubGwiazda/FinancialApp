@@ -5,8 +5,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApiModule } from 'crypto-api/model/api.module';
-import { Configuration, ConfigurationParameters } from 'crypto-api/model/configuration';
 import { MenuComponent } from './menu/menu.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import {MatButtonModule} from '@angular/material/button';
@@ -36,12 +34,13 @@ import { TrackerEffects } from './store/effects';
 import { SimpleCardComponent } from './common/components/simple-card/simple-card.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ChartComponent } from './common/components/chart/chart.component';
-import { BASE_PATH } from 'crypto-api/model';
 import environment from '../environments/enviroment.json';
 import environmentProd from '../environments/enviroment.prod.json';
 import { MatSelectModule } from '@angular/material/select';
 import { NotificationService } from './services/notifications/notification-service.service';
 import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
+import { BASE_PATH as FinancialApiBasePath } from 'crypto-api/model/financial';
+import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notification';
 
 // export function apiConfigFactory (): Configuration {
 //   const params: ConfigurationParameters = {
@@ -99,6 +98,7 @@ import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/m
     providers: [
       NotificationService,
       provideHttpClient(withInterceptorsFromDi()),
-      { provide: BASE_PATH, useValue: environmentProd.apiUrl }
+      { provide: FinancialApiBasePath, useValue: environmentProd.apiUrl },
+      { provide: NotificationApiBasePath, useValue: environmentProd.apiUrl },
     ] })
 export class AppModule { }

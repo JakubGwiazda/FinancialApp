@@ -11,22 +11,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinancialApp.Application", "..\FinancialApp.Application\FinancialApp.Application.csproj", "{9599B6AA-760A-4876-A7C4-816C47F9B3D4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{2215561E-B1D8-46A3-9B59-45272C18F37F}"
-	ProjectSection(SolutionItems) = preProject
-		..\Database\FinancialDb.db = ..\Database\FinancialDb.db
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{08B35D23-4C9E-43D1-AC55-3A16E6CFBF9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "..\NotificationService\NotificationService.csproj", "{C2E65C4C-9CE5-43EA-B776-E364565FFA6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService", "..\NotificationService\NotificationService.csproj", "{C2E65C4C-9CE5-43EA-B776-E364565FFA6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Application", "..\NotificationService.Application\NotificationService.Application.csproj", "{6CB22749-75A3-43D2-A306-C9FB1529F506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService.Application", "..\NotificationService.Application\NotificationService.Application.csproj", "{6CB22749-75A3-43D2-A306-C9FB1529F506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Infrastructure", "..\NotificationService.Infrastructure\NotificationService.Infrastructure.csproj", "{599A4DC2-6C80-420B-BEFD-6A1C13D6891E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService.Infrastructure", "..\NotificationService.Infrastructure\NotificationService.Infrastructure.csproj", "{599A4DC2-6C80-420B-BEFD-6A1C13D6891E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Domain", "..\NotificationService.Domain\NotificationService.Domain.csproj", "{E024F410-1C9E-486C-A9ED-32B768F08D7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationService.Domain", "..\NotificationService.Domain\NotificationService.Domain.csproj", "{E024F410-1C9E-486C-A9ED-32B768F08D7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Financial", "Financial", "{8D15FFD9-DE72-4491-90BA-027CB2C699A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBF40AA1-DD87-4E16-AD6E-7E05480EC6A4}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		..\docker-compose.yml = ..\docker-compose.yml
+		traefik-configuration.yml = traefik-configuration.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

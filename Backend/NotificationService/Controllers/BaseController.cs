@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NotificationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("notification/[controller]")]
     [ApiController]
     public abstract class BaseController : ControllerBase
     {

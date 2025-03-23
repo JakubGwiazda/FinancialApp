@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NotificationService.Domain;
 
 namespace NotificationService.Infrastructure.Context
@@ -17,9 +18,7 @@ namespace NotificationService.Infrastructure.Context
             _configuration = configuration;
         }
 
-        public DbSet<CryptoData> CryptoData { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
-        public DbSet<TrackedCryptocurrencies> TrackedCryptocurrencies { get; set; }
         public DbSet<RegisteredDevices> RegisteredDevices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,18 +28,15 @@ namespace NotificationService.Infrastructure.Context
                 .HasConversion<string>();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+    /*    protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            if (!options.IsConfigured)
+            var connectionString = _configuration.GetConnectionString("NotificationDatabase");
+            if (string.IsNullOrEmpty(connectionString))
             {
-                var connectionString = _configuration?.GetConnectionString("FinancialDatabase") ?? "Data Source=../../Database/FinancialDb.db";
-
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    throw new InvalidOperationException("Database connection string is missing.");
-                }
-                options.UseSqlite(connectionString);
+                throw new InvalidOperationException("The ConnectionString property has not been initialized.");
             }
-        }
+
+            options.UseNpgsql(connectionString);
+        }*/
     }
 }

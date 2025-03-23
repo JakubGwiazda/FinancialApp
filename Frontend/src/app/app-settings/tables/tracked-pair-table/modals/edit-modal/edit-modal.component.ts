@@ -1,7 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SettingValueType } from 'crypto-api/model';
 import { ITrackedPairs } from 'src/app/common/interfaces/ITrackedPairs';
 
 @Component({

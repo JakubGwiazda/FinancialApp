@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/CryptoData/get-avg-prices": {
+    "/financial/CryptoData/get-avg-prices": {
       "post": {
         "tags": [
           "CryptoData"
@@ -54,110 +54,29 @@
         }
       }
     },
-    "/api/Notification/sendNotification": {
-      "post": {
+    "/financial/Settings/get-settings": {
+      "get": {
         "tags": [
-          "Notification"
+          "Settings"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "string"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Notification": {
-      "post": {
-        "tags": [
-          "Notification"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MessageRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MessageRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MessageRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Notification/register-device": {
-      "post": {
-        "tags": [
-          "Notification"
-        ],
-        "operationId": "register-device",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDeviceCmd"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDeviceCmd"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDeviceCmd"
-              }
-            }
-          }
-        },
+        "operationId": "get-settings",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Result"
+                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Result"
+                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Result"
+                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
                 }
               }
             }
@@ -165,105 +84,7 @@
         }
       }
     },
-    "/api/Notification/remove-device": {
-      "post": {
-        "tags": [
-          "Notification"
-        ],
-        "operationId": "remove-device",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveDeviceCmd"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveDeviceCmd"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveDeviceCmd"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Notification/update-device": {
-      "post": {
-        "tags": [
-          "Notification"
-        ],
-        "operationId": "update-device",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDeviceCmd"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDeviceCmd"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateDeviceCmd"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Result"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Settings/add-tracker": {
+    "/financial/Settings/add-tracker": {
       "post": {
         "tags": [
           "Settings"
@@ -312,7 +133,7 @@
         }
       }
     },
-    "/api/Settings/get-tracker-pairs": {
+    "/financial/Settings/get-tracker-pairs": {
       "get": {
         "tags": [
           "Settings"
@@ -342,7 +163,7 @@
         }
       }
     },
-    "/api/Settings/set-setting": {
+    "/financial/Settings/set-setting": {
       "post": {
         "tags": [
           "Settings"
@@ -391,37 +212,7 @@
         }
       }
     },
-    "/api/Settings/get-settings": {
-      "get": {
-        "tags": [
-          "Settings"
-        ],
-        "operationId": "get-settings",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAppSettingsResponseListResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Settings/remove-tracker": {
+    "/financial/Settings/remove-tracker": {
       "post": {
         "tags": [
           "Settings"
@@ -470,7 +261,7 @@
         }
       }
     },
-    "/api/Settings/update-tracked-pair": {
+    "/financial/Settings/update-tracked-pair": {
       "post": {
         "tags": [
           "Settings"
@@ -519,7 +310,7 @@
         }
       }
     },
-    "/api/Settings/update-settings": {
+    "/financial/Settings/update-settings": {
       "post": {
         "tags": [
           "Settings"
@@ -952,24 +743,6 @@
         },
         "additionalProperties": false
       },
-      "MessageRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "body": {
-            "type": "string",
-            "nullable": true
-          },
-          "deviceToken": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "PriceInfo": {
         "type": "object",
         "properties": {
@@ -980,26 +753,6 @@
           "data": {
             "type": "string",
             "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RegisterDeviceCmd": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RemoveDeviceCmd": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1107,20 +860,6 @@
           },
           "collectData": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateDeviceCmd": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "token": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

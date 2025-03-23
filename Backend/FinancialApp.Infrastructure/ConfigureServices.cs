@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
-using SQLitePCL;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -23,12 +22,10 @@ public static class ConfigurationServices
         {
             return RabbitMQProducer.CreateAsync(configuration).GetAwaiter().GetResult();
         });
-
-        services.AddDbContext<BaseContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("FinancialDatabase")));
+            
+        services.AddDbContext<BaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("FinancialDatabase")));
 
         services.AddHostedService<RequestWorker>();
-        services.AddSignalR();
 
         return services;
     }

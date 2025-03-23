@@ -8,13 +8,9 @@ import {
   getPriceChanges,
   getPriceChangesSuccess,
 } from './actions';
-import {
-  CryptoDataService,
-  GetCryptoDataQuery,
-  SettingsService,
-} from 'crypto-api/model';
 import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { IPriceChanges, IPriceInfo } from './reducers';
+import { CryptoDataService, SettingsService } from 'crypto-api/model/financial';
 
 @Injectable()
 export class TrackerEffects {

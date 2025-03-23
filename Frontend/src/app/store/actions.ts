@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { IPriceChanges } from './reducers';
-import { TimePeriod } from 'crypto-api/model';
 import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
 
 export const getTrackedItems = createAction('GetTrackedItems');

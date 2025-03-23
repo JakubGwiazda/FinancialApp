@@ -30,7 +30,7 @@ namespace NotificationService.Infrastructure.Services.RabbitMQ
             {
                 HostName = _configuration["RabbitMQ:Host"],
                 UserName = _configuration["RabbitMQ:Username"],
-                Password = _configuration["RabbitMQ:Password"]
+                Password = _configuration["RabbitMQ:Password"],
             };
 
             _connection = await factory.CreateConnectionAsync();
