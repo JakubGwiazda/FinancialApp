@@ -29,6 +29,7 @@ namespace NotificationService.Infrastructure.Services.RabbitMQ
             var factory = new ConnectionFactory()
             {
                 HostName = _configuration["RabbitMQ:Host"],
+                Port = int.Parse(_configuration["RabbitMQ:Port"]),
                 UserName = _configuration["RabbitMQ:Username"],
                 Password = _configuration["RabbitMQ:Password"],
             };

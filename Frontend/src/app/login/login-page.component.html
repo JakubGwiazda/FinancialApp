@@ -1,0 +1,34 @@
+<form
+  [formGroup]="userForm"
+  (ngSubmit)="onSubmit()"
+  class="form mb-5"
+><div  class="mt-4">
+  <mat-form-field class="me-5">
+    <mat-label>User</mat-label>
+    <input
+      matInput
+      formControlName="user"
+      placeholder="User name"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" placeholder="Password" type="password"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Confirm password</mat-label>
+    <input matInput formControlName="passwordConfirmed" placeholder="Password" type="password"/>
+  </mat-form-field>
+</div>
+  <div class="mt-4">
+  <button
+  class="ms-5"
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="userForm.invalid"
+  >
+    Register
+  </button>
+</div>
+</form>

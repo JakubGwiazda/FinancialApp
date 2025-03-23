@@ -18,13 +18,14 @@ builder.Configuration
 
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
-/*var baseUrl = builder.Configuration["ApiSettings:BaseUrl"];
+var baseUrl = builder.Configuration["ApiSettings:BaseUrl"];
 
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     client.BaseAddress = new Uri(baseUrl);
-});*/
+});
 
 builder.Services.AddCors(options =>
 {
@@ -55,9 +56,7 @@ if (app.Environment.IsDevelopment())
     }
 }
 
-
+app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

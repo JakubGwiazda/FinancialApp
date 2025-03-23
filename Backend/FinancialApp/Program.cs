@@ -18,6 +18,14 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
+
+var baseUrl = builder.Configuration["ApiSettings:BaseUrl"];
+
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -47,10 +55,9 @@ if (app.Environment.IsDevelopment())
     }
 }
 
-app.UseAuthorization();
-
-app.MapControllers();
 app.UseCors();
+app.UseAuthorization();
+app.MapControllers();
 
 FirebaseApp.Create(new AppOptions()
 {

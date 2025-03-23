@@ -15,7 +15,11 @@ const config: CapacitorConfig = {
   server: {
     url:'http://192.168.0.13:4200/dashboard'
     cleartext: true,
-    allowNavigation: ['https://192.168.0.13:7054']
+    allowNavigation: [
+      "http://192.168.0.13:5113",
+      "http://192.168.0.13:5102"
+   //   "http://192.168.0.13"
+      ]
   }
 };
 

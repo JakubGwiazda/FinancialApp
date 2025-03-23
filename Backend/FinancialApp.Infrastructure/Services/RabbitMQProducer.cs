@@ -27,8 +27,9 @@ namespace FinancialApp.Infrastructure.Services
         {
             var instance = new RabbitMQProducer();
             var factory = new ConnectionFactory()
-            {
+            {                
                 HostName = configuration["RabbitMQ:Host"],
+                Port = int.Parse(configuration["RabbitMQ:Port"]),
                 UserName = configuration["RabbitMQ:Username"],
                 Password = configuration["RabbitMQ:Password"],
             };

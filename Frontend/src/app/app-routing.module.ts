@@ -4,16 +4,18 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { SettingsComponent } from './app-settings/settings.component';
 import { PopUpComponent } from './dashboard/Draggable/pop-up/pop-up.component';
+import { LoginPageComponent } from './login/login-page.component';
 
 const routes: Routes = [
-  {path:'dashboard', component: DashboardComponent},
-  {path:'transaction', component: TransactionsComponent},
-  {path:'settings', component: SettingsComponent},
-  { path: 'popup', component: PopUpComponent } // Nowa ścieżka do komponentu
+  { path: 'login', component: LoginPageComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'transaction', component: TransactionsComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: 'popup', component: PopUpComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

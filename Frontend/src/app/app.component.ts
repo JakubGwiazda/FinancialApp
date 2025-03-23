@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
     try {
       const permission = await FirebaseMessaging.requestPermissions();
       console.log('FCM Permission:', permission);
+      console.log('FCM Permission:', permission.receive);
 
       if (permission.receive === 'granted') {
         const token = await FirebaseMessaging.getToken();

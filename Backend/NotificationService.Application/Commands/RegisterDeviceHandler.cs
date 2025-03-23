@@ -23,7 +23,7 @@ namespace NotificationService.Application.Commands
 
             if(data == null)
             {
-                await _repository.AddNewRecord(new RegisteredDevices() { Token = cmd.Token, CreateDate = DateTime.Now });
+                await _repository.AddNewRecord(new RegisteredDevices() { Token = cmd.Token, CreateDate = DateTime.UtcNow });
             }
 
             return Result.Ok();

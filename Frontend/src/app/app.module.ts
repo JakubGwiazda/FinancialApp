@@ -41,6 +41,7 @@ import { NotificationService } from './services/notifications/notification-servi
 import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
 import { BASE_PATH as FinancialApiBasePath } from 'crypto-api/model/financial';
 import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notification';
+import { LoginPageComponent } from './login/login-page.component';
 
 // export function apiConfigFactory (): Configuration {
 //   const params: ConfigurationParameters = {
@@ -63,7 +64,8 @@ import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notificati
         TrackedPairTableComponent,
         EditSettingModalComponent,
         DeleteModalComponent,
-        DraggableWindowComponent
+        DraggableWindowComponent,
+        LoginPageComponent
     ],
     bootstrap: [AppComponent], 
     imports: [
@@ -98,7 +100,7 @@ import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notificati
     providers: [
       NotificationService,
       provideHttpClient(withInterceptorsFromDi()),
-      { provide: FinancialApiBasePath, useValue: environmentProd.apiUrl },
-      { provide: NotificationApiBasePath, useValue: environmentProd.apiUrl },
+      { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
+      { provide: NotificationApiBasePath, useValue: environment.notificationApiUrl },
     ] })
 export class AppModule { }

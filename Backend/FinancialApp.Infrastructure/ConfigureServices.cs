@@ -16,7 +16,7 @@ public static class ConfigurationServices
     {
         services.AddScoped<ICryptoCurrenciesSettingsRepository, CryptoCurrenciesSettingsRepository>();
         services.AddScoped<ICryptoDataRepository, CryptoDataRepository>();
-        services.AddScoped<IRegisteredDevicesRepository, RegisteredDevicesRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
 
         services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>(sp =>
         {

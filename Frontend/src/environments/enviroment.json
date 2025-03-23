@@ -1,4 +1,5 @@
 {
     "production": false,
-    "apiUrl": "https://localhost:7054"
+    "finanacialApiUrl": "http://192.168.0.13:5113",
+    "notificationApiUrl": "http://192.168.0.13:5102"
 }
