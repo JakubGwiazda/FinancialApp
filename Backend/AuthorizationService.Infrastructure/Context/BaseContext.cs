@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AuthorizationService.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using NotificationService.Domain;
 
-namespace NotificationService.Infrastructure.Context
+namespace AuthorizationService.Infrastructure.Context
 {
     public class BaseContext : DbContext
     {
@@ -18,14 +17,10 @@ namespace NotificationService.Infrastructure.Context
             _configuration = configuration;
         }
 
-        public DbSet<AppSettings> AppSettings { get; set; }
-        public DbSet<RegisteredDevices> RegisteredDevices { get; set; }
+        public DbSet<Users> AppSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<AppSettings>()
-                .Property(e => e.ValueType)
-                .HasConversion<string>();
+        { 
         }
     }
 }

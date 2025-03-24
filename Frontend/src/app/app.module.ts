@@ -42,6 +42,7 @@ import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/m
 import { BASE_PATH as FinancialApiBasePath } from 'crypto-api/model/financial';
 import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notification';
 import { LoginPageComponent } from './login/login-page.component';
+import { RegisterAccountComponent } from './register-account/register-account.component';
 
 // export function apiConfigFactory (): Configuration {
 //   const params: ConfigurationParameters = {
@@ -65,7 +66,8 @@ import { LoginPageComponent } from './login/login-page.component';
         EditSettingModalComponent,
         DeleteModalComponent,
         DraggableWindowComponent,
-        LoginPageComponent
+        LoginPageComponent,
+        RegisterAccountComponent
     ],
     bootstrap: [AppComponent], 
     imports: [

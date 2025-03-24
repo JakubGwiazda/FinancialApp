@@ -25,10 +25,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Financial", "Financial", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBF40AA1-DD87-4E16-AD6E-7E05480EC6A4}"
 	ProjectSection(SolutionItems) = preProject
-		.env = .env
+		..\.env = ..\.env
 		..\docker-compose.yml = ..\docker-compose.yml
 		traefik-configuration.yml = traefik-configuration.yml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthorizationService", "AuthorizationService", "{E32F65B4-DD43-4548-A8BD-B11B98FFA87D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService", "..\AuthorizationService\AuthorizationService.csproj", "{3821CDE9-5006-48A5-BC46-142A2202EBE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Application", "..\AuthorizationService.Application\AuthorizationService.Application.csproj", "{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Domain", "..\AuthorizationService.Domain\AuthorizationService.Domain.csproj", "{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Infrastructure", "..\AuthorizationService.Infrastructure\AuthorizationService.Infrastructure.csproj", "{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +78,22 @@ Global
 		{E024F410-1C9E-486C-A9ED-32B768F08D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E024F410-1C9E-486C-A9ED-32B768F08D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E024F410-1C9E-486C-A9ED-32B768F08D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3821CDE9-5006-48A5-BC46-142A2202EBE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3821CDE9-5006-48A5-BC46-142A2202EBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3821CDE9-5006-48A5-BC46-142A2202EBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3821CDE9-5006-48A5-BC46-142A2202EBE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +107,10 @@ Global
 		{6CB22749-75A3-43D2-A306-C9FB1529F506} = {08B35D23-4C9E-43D1-AC55-3A16E6CFBF9B}
 		{599A4DC2-6C80-420B-BEFD-6A1C13D6891E} = {08B35D23-4C9E-43D1-AC55-3A16E6CFBF9B}
 		{E024F410-1C9E-486C-A9ED-32B768F08D7F} = {08B35D23-4C9E-43D1-AC55-3A16E6CFBF9B}
+		{3821CDE9-5006-48A5-BC46-142A2202EBE7} = {E32F65B4-DD43-4548-A8BD-B11B98FFA87D}
+		{CF8EBD99-CBEF-4A85-B168-CC165C930AB5} = {E32F65B4-DD43-4548-A8BD-B11B98FFA87D}
+		{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D} = {E32F65B4-DD43-4548-A8BD-B11B98FFA87D}
+		{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E} = {E32F65B4-DD43-4548-A8BD-B11B98FFA87D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D0870CA-F23C-48A8-A441-3D4C43084942}

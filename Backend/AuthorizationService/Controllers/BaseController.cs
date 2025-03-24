@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialApp.Controllers
+namespace AuthorizationService.Controllers
 {
-    [Route("financial/[controller]")]
+    [Route("authorization/[controller]")]
     [ApiController]
     public abstract class BaseController : ControllerBase
     {

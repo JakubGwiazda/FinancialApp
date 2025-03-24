@@ -4,6 +4,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -12,6 +13,8 @@ import {
   standalone: false
 })
 export class LoginPageComponent {
+
+  constructor(private router: Router){}
 
   userForm = new FormGroup({
     user: new FormControl('', Validators.required),
@@ -26,6 +29,11 @@ export class LoginPageComponent {
     }else{
       console.log('hasla sie nie zgadzaja')
     }
+  }
+
+  registerAccount(){
+    console.log('regisrter')
+    this.router.navigate(['/register-account']);
   }
 
 }
