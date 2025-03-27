@@ -1,5 +1,6 @@
 ﻿using FinancialApp.Application.Commands.Notifications;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NotificationService.Application.Commands;
 using NotificationService.Infrastructure.Models;
@@ -18,6 +19,7 @@ namespace NotificationService.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpPost("register-device", Name = "register-device")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -26,6 +28,7 @@ namespace NotificationService.Controllers
             return await Mediator.Send(cmd);
         }
 
+        [Authorize]
         [HttpPost("remove-device", Name = "remove-device")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -34,6 +37,7 @@ namespace NotificationService.Controllers
             return await Mediator.Send(cmd);
         }
 
+        [Authorize]
         [HttpPost("update-device", Name = "update-device")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]

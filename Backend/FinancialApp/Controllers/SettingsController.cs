@@ -2,6 +2,7 @@
 using FinancialApp.Application.Queries;
 using FluentResults;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -11,6 +12,7 @@ namespace FinancialApp.Controllers
 {
     public class SettingsController : BaseController
     {
+        [Authorize]
         [HttpGet("get-settings", Name = "get-settings")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetAppSettingsResponse>>), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -18,7 +20,7 @@ namespace FinancialApp.Controllers
         {
             return await Mediator.Send(new GetAppSettingsQuery());
         }
-
+        [Authorize]
         [HttpPost("add-tracker", Name = "add-tracker")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -29,6 +31,7 @@ namespace FinancialApp.Controllers
             return Result.Ok();
         }
 
+        [Authorize]
         [HttpGet("get-tracker-pairs", Name = "get-tracker-pairs")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetTrackedCryptoResponse>>), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -37,6 +40,7 @@ namespace FinancialApp.Controllers
             return await Mediator.Send(new GetTrackedCryptoQuery());
         }
 
+        [Authorize]
         [HttpPost("set-setting", Name = "set-setting")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -45,6 +49,7 @@ namespace FinancialApp.Controllers
             return await Mediator.Send(cmd);
         }
 
+        [Authorize]
         [HttpPost("remove-tracker", Name = "remove-tracker")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "Tracker has been removed")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -53,6 +58,7 @@ namespace FinancialApp.Controllers
             return await Mediator.Send(cmd);
         }
 
+        [Authorize]
         [HttpPost("update-tracked-pair", Name = "update-tracked-pair")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "Tracker has been removed")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
@@ -61,6 +67,7 @@ namespace FinancialApp.Controllers
             return await Mediator.Send(cmd);
         }
 
+        [Authorize]
         [HttpPost("update-settings", Name = "update-settings")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "Tracker has been removed")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]

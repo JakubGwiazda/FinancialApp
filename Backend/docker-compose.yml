@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  traefik:
+  traefik:  
     image: traefik:latest
     container_name: traefik
     restart: always
@@ -67,6 +67,37 @@ services:
     networks:
       - financial-app-net
 
+  authorization-db:
+    image: postgres:latest
+    container_name: authorization-db
+    restart: always
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: ${AUTHORIZATION_DB_PASSWORD}
+      POSTGRES_DB: AuthorizationDB
+    volumes:
+      - authorization_db_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - financial-app-net
+
+  authorization-service:
+    build:
+      context: .
+      dockerfile: AuthorizationService/Dockerfile
+    container_name: authorization-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:5233
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authorization-service.rule= PathPrefix(`/authorization`)"
+      - "traefik.http.routers.authorization-service.entrypoints=web"
+      - "traefik.http.services.authorization-service.loadbalancer.server.port=5233"
+    networks:
+      - financial-app-net
+
   financial-app:
     build:
       context: .
@@ -115,3 +146,4 @@ networks:
 volumes:
   financial_db_data:
   notification_db_data:
+  authorization_db_data:  
