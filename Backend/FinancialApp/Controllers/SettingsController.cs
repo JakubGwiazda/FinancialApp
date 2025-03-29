@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
+using System.ComponentModel;
 using System.Net;
+using System.Security.Authentication;
 
 namespace FinancialApp.Controllers
 {
@@ -16,10 +18,12 @@ namespace FinancialApp.Controllers
         [HttpGet("get-settings", Name = "get-settings")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result<List<GetAppSettingsResponse>>), Description = "The crypto information has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
-        public async Task<Result<List<GetAppSettingsResponse>>> SetSetting()
+        [SwaggerResponse(HttpStatusCode.Unauthorized, typeof(Result), Description = "Unauthorized access.")]
+        public async Task<Result<List<GetAppSettingsResponse>>> GetSettings()
         {
             return await Mediator.Send(new GetAppSettingsQuery());
         }
+
         [Authorize]
         [HttpPost("add-tracker", Name = "add-tracker")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result), Description = "The crypto information has been retrieved.")]

@@ -92,20 +92,6 @@ export class NotificationService implements OnInit {
     });
   }
 
-  // private initializeAppStateListener() {
-  //   App.addListener('appStateChange', async ({ isActive }) => {
-  //     if (!isActive) {
-  //       // Aplikacja przeszła w tło
-  //       const taskId = await BackgroundTask.beforeExit(async () => {
-  //         this.hubConnection
-  //           .start()
-  //           .catch((err) => console.log('Error re-establishing connection: ' + err));
-
-  //         BackgroundTask.finish({ taskId });
-  //       });
-  //     }
-  //   });
-  // }
 
   async pushNotification(notificationKind: NotificaitonKindEnum, title: string, body:string) {
     const permStatus = await LocalNotifications.checkPermissions();

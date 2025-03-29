@@ -28,7 +28,7 @@ namespace FinancialApp.Application.Queries
         public async Task<Result<List<GetAppSettingsResponse>>> Handle(GetAppSettingsQuery request, CancellationToken cancellationToken)
         {
             var data = await _repository.GetAllRecords<AppSettings>();
-
+            
             return data.Select(p => new GetAppSettingsResponse()
             {
                 Id = p.Id,

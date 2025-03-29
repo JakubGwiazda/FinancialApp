@@ -8,6 +8,7 @@ namespace AuthorizationService.Application.Interfaces
 {
     public interface ITokenGenerator
     {
-        (string token, DateTime expirationDate) GenerateJwtToken(string user); 
+        (string token, DateTime expirationDate) GenerateJwtToken(string user);
+        (string refreshToken, DateTime expirationDate) GenerateJwtRefreshToken(string user);
     }
 }

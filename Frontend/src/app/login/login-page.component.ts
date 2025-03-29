@@ -5,6 +5,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthorizationService } from 'crypto-api/model/authorization';
+import { TokenStorageService } from '../services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,21 +16,21 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent {
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private authorizationService: AuthorizationService, private tokenStorage: TokenStorageService){}
 
   userForm = new FormGroup({
     user: new FormControl('', Validators.required),
     password: new FormControl('', [Validators.required]),
-    passwordConfirmed: new FormControl('', [Validators.required])
   });
 
   onSubmit(){
-
-    if(this.userForm.controls.password.value === this.userForm.controls.passwordConfirmed.value){
-      console.log('hasla sie zgadzaja')
-    }else{
-      console.log('hasla sie nie zgadzaja')
-    }
+    this.authorizationService.login({ ...this.userForm.value }).subscribe(async p => 
+    {
+      await this.tokenStorage.saveToken(p.value!.token!)
+      await this.tokenStorage.saveRefreshToken(p.value!.refreshToken!)
+      
+      this.router.navigate(['/dashboard']);
+    })    
   }
 
   registerAccount(){

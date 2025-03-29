@@ -1,6 +1,7 @@
 ﻿using AuthorizationService.Application.Interfaces;
 using AuthorizationService.Infrastructure.Context;
 using AuthorizationService.Infrastructure.Jwt;
+using AuthorizationService.Infrastructure.Managers;
 using AuthorizationService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,8 +14,8 @@ public static class ConfigureServices
     {
         services.AddDbContext<BaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("AuthorizationDB")));
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddSingleton<ITokenGenerator, TokenGenerator>();
-
+        services.AddScoped<ITokenGenerator, TokenGenerator>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
         return services;
     }
 }

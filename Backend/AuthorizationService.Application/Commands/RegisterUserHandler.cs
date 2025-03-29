@@ -6,34 +6,42 @@ using Microsoft.Extensions.Configuration;
 
 namespace AuthorizationService.Application.Commands
 {
-    public class RegisterUserCmd : IRequest<Result<string>>
+    public class RegisterUserCmd : IRequest<Result>
     {
         public string Name { get; set; }
         public string Password { get; set; }
     }
 
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCmd, Result<string>>
+    public class RegisterUserHandler : IRequestHandler<RegisterUserCmd, Result>
     {
         private IUserRepository _repository;
-        private ITokenGenerator _tokenGenerator;
         private IConfiguration _configuration;
-        public RegisterUserHandler(IUserRepository userRepository, ITokenGenerator tokenGenerator, IConfiguration configuration)
+        private IPasswordManager _passwordManager;
+        private ITokenGenerator _tokenGenerator;
+
+        public RegisterUserHandler(IUserRepository userRepository, IConfiguration configuration, IPasswordManager passwordManager, ITokenGenerator tokenGenerator)
         {
             _repository = userRepository;
-            _tokenGenerator = tokenGenerator;
             _configuration = configuration;
+            _passwordManager = passwordManager;
+            _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<Result<string>> Handle(RegisterUserCmd cmd, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RegisterUserCmd cmd, CancellationToken cancellationToken)
         {
-            var jwtSettings = _configuration.GetSection("Jwt");
-            var expirationDate = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"]));
+            var user = await _repository.GetRecord<Users>(p => p.User == cmd.Name);
 
-            var token = _tokenGenerator.GenerateJwtToken(cmd.Name);
-            await _repository.AddNewRecord(new Users() { User = cmd.Name, Password = cmd.Password, Token = token.token, CreationDate = DateTime.UtcNow, TokenExpirationDate = expirationDate });
+            if(user != null)
+            {
+                return Result.Fail("User about given name exists.");
+            }
+
+            var hashedPassword = this._passwordManager.HashPassword(cmd.Password);
+
+            await _repository.AddNewRecord(new Users() { User = cmd.Name, Password = hashedPassword, CreationDate = DateTime.UtcNow });
             await _repository.SaveChangesAsync();
 
-            return Result.Ok(token.token);
+            return Result.Ok();
         }
     }
 }

@@ -3,11 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatCardModule} from '@angular/material/card';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { MenuComponent } from './menu/menu.component';
 import { TransactionsComponent } from './transactions/transactions.component';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +27,7 @@ import { EditModalComponent } from './app-settings/tables/tracked-pair-table/mod
 import { MatDialogModule } from '@angular/material/dialog';
 import { SettingsTableComponent } from './app-settings/tables/settings-table/settings-table.component';
 import { TrackedPairTableComponent } from './app-settings/tables/tracked-pair-table/tracked-pair-table.component';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditSettingModalComponent } from './app-settings/tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DraggableWindowComponent } from './dashboard/Draggable/draggable-window/draggable-window.component';
@@ -40,69 +44,75 @@ import { MatSelectModule } from '@angular/material/select';
 import { NotificationService } from './services/notifications/notification-service.service';
 import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
 import { BASE_PATH as FinancialApiBasePath } from 'crypto-api/model/financial';
-import { BASE_PATH as NotificationApiBasePath} from 'crypto-api/model/notification';
+import { BASE_PATH as NotificationApiBasePath } from 'crypto-api/model/notification';
+import { BASE_PATH as AuthorizationApiBasePath } from 'crypto-api/model/authorization';
 import { LoginPageComponent } from './login/login-page.component';
 import { RegisterAccountComponent } from './register-account/register-account.component';
+import { LayoutComponent } from './layout/layout.component';
+import { AuthorizationInterceptor } from './interceptors/auth-interceptor.interceptor';
 
-// export function apiConfigFactory (): Configuration {
-//   const params: ConfigurationParameters = {
-//     basePath: 'https://localhost:7054'
-//   }
-//   return new Configuration(params);
-// }
-
-@NgModule({ declarations: [
-        AppComponent,
-        DashboardComponent,
-        MenuComponent,
-        TransactionsComponent,
-        TableSortingExampleComponent,
-        UploadFileDirective,
-        SettingsComponent,
-        DynamicTableComponent,
-        EditModalComponent,
-        SettingsTableComponent,
-        TrackedPairTableComponent,
-        EditSettingModalComponent,
-        DeleteModalComponent,
-        DraggableWindowComponent,
-        LoginPageComponent,
-        RegisterAccountComponent
-    ],
-    bootstrap: [AppComponent], 
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        //ApiModule.forRoot(apiConfigFactory),
-        MatButtonModule,
-        HighchartsChartModule,
-        MatTableModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSortModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatHint,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        DragDropModule,
-        ChartComponent,
-        StoreModule.forRoot({ cryptoState: itemsReducer }),
-        EffectsModule.forRoot([TrackerEffects]),
-        SimpleCardComponent,
-        StoreDevtoolsModule.instrument({
-          maxAge: 25,
-        })
-      ],
-    providers: [
-      NotificationService,
-      provideHttpClient(withInterceptorsFromDi()),
-      { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
-      { provide: NotificationApiBasePath, useValue: environment.notificationApiUrl },
-    ] })
-export class AppModule { }
+@NgModule({
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    MenuComponent,
+    TransactionsComponent,
+    TableSortingExampleComponent,
+    UploadFileDirective,
+    SettingsComponent,
+    DynamicTableComponent,
+    EditModalComponent,
+    SettingsTableComponent,
+    TrackedPairTableComponent,
+    EditSettingModalComponent,
+    DeleteModalComponent,
+    DraggableWindowComponent,
+    LoginPageComponent,
+    RegisterAccountComponent,
+    LayoutComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    HighchartsChartModule,
+    MatTableModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatHint,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    DragDropModule,
+    ChartComponent,
+    StoreModule.forRoot({ cryptoState: itemsReducer }),
+    EffectsModule.forRoot([TrackerEffects]),
+    SimpleCardComponent,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
+  ],
+  providers: [
+    NotificationService,
+    provideHttpClient(withInterceptorsFromDi()),
+    { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
+    {
+      provide: NotificationApiBasePath,
+      useValue: environment.notificationApiUrl,
+    },
+    {
+      provide: AuthorizationApiBasePath,
+      useValue: environment.authorizationApiUrl,
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true },
+  ],
+})
+export class AppModule {}

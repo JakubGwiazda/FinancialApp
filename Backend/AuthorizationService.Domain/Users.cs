@@ -10,8 +10,8 @@ namespace AuthorizationService.Domain
         public int Id { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
-        public string Token { get; set; }
+        public string? RefreshToken { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime? TokenExpirationDate { get; set; }
+        public DateTime? RefreshTokenExpirationDate { get; set; }
     }
 }

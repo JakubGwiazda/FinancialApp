@@ -1,5 +1,4 @@
 ﻿using AuthorizationService.Application.Interfaces;
-using AuthorizationService.Application.Services;
 using AuthorizationService.Domain;
 using FluentResults;
 using MediatR;
@@ -9,7 +8,7 @@ namespace AuthorizationService.Application.Queries
 {
     public class GetNewTokenCmd : IRequest<Result<string>>
     {
-        public int UserId { get; set; }
+        public string User { get; set; }
     }
 
     public class GetNewTokenHandler : IRequestHandler<GetNewTokenCmd, Result<string>>
@@ -27,13 +26,8 @@ namespace AuthorizationService.Application.Queries
 
         public async Task<Result<string>> Handle(GetNewTokenCmd request, CancellationToken cancellationToken)
         {
-            var tokenService = new JwtTokenGenerator(_configuration);
-            var user = await _userRepository.GetRecord<Users>(p => p.Id == request.UserId);
+            var user = await _userRepository.GetRecord<Users>(p => p.User == request.User);
             var token = _tokenGenerator.GenerateJwtToken(user.User);
-
-            user.Token = token.token;
-            user.TokenExpirationDate = token.expirationDate;
-            await _userRepository.SaveChangesAsync();
 
             return Result.Ok(token.token);
         }

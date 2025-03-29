@@ -3,6 +3,7 @@ using System;
 using AuthorizationService.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthorizationService.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    partial class BaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250329111016_AlterTable_Users_AlterColumnNames")]
+    partial class AlterTable_Users_AlterColumnNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,7 @@ namespace AuthorizationService.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("RefreshToken")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("RefreshTokenExpirationDate")
