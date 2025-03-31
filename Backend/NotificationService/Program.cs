@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
@@ -10,6 +11,11 @@ using System.Text;
 using System.Threading;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging
+    .ClearProviders()
+    .AddConsole()
+    .AddDebug();
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
@@ -50,10 +56,22 @@ builder.Configuration
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var authHeader = context.Request.Headers["Authorization"];
+                Console.WriteLine($"Authorization Header: {authHeader}");
+                return Task.CompletedTask;
+            }
+        };
+
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -101,6 +119,11 @@ if (app.Environment.IsDevelopment())
         swagger.SerializeAsV3(new OpenApiJsonWriter(writer));
     }
 }
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.All
+});
 
 app.UseCors();
 app.UseAuthorization();

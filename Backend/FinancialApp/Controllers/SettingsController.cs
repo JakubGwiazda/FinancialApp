@@ -1,14 +1,10 @@
 ﻿using FinancialApp.Application.Commands;
 using FinancialApp.Application.Queries;
 using FluentResults;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using System.ComponentModel;
 using System.Net;
-using System.Security.Authentication;
 
 namespace FinancialApp.Controllers
 {

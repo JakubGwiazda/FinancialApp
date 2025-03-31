@@ -32,13 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthorizationService", "AuthorizationService", "{E32F65B4-DD43-4548-A8BD-B11B98FFA87D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService", "..\AuthorizationService\AuthorizationService.csproj", "{3821CDE9-5006-48A5-BC46-142A2202EBE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "..\AuthorizationService\AuthorizationService.csproj", "{3821CDE9-5006-48A5-BC46-142A2202EBE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Application", "..\AuthorizationService.Application\AuthorizationService.Application.csproj", "{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService.Application", "..\AuthorizationService.Application\AuthorizationService.Application.csproj", "{CF8EBD99-CBEF-4A85-B168-CC165C930AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Domain", "..\AuthorizationService.Domain\AuthorizationService.Domain.csproj", "{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService.Domain", "..\AuthorizationService.Domain\AuthorizationService.Domain.csproj", "{F0CA7C99-0F45-45F7-BA1A-D0AF5FFFEE3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.Infrastructure", "..\AuthorizationService.Infrastructure\AuthorizationService.Infrastructure.csproj", "{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService.Infrastructure", "..\AuthorizationService.Infrastructure\AuthorizationService.Infrastructure.csproj", "{8F9DCDBB-E733-4FE0-B6AB-2A5F2F4BE81E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

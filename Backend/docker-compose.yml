@@ -10,15 +10,16 @@ services:
       - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+      - "--providers.file.filename=/etc/traefik/traefik-configuration.yml"
       - "--entrypoints.web.address=:80"
+      -  "--entrypoints.web.forwardedHeaders.trustedIPs=0.0.0.0/0"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      - "./traefik-configuration.yml:/etc/traefik/traefik-configuration.yml"
     networks:
       - financial-app-net
 
@@ -90,11 +91,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:5233
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.authorization-service.rule= PathPrefix(`/authorization`)"
-      - "traefik.http.routers.authorization-service.entrypoints=web"
-      - "traefik.http.services.authorization-service.loadbalancer.server.port=5233"
+    volumes:
+      - /app/logs
     networks:
       - financial-app-net
 
@@ -107,12 +105,8 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:5113
-
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.financial-app.rule= PathPrefix(`/financial`)"
-      - "traefik.http.routers.financial-app.entrypoints=web"
-      - "traefik.http.services.financial-app.loadbalancer.server.port=5113"
+    volumes:
+      - /app/logs
     networks:
       - financial-app-net
     depends_on:
@@ -128,11 +122,8 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:5102
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.notification-service.rule= PathPrefix(`/notification`)"
-      - "traefik.http.routers.notification-service.entrypoints=web"
-      - "traefik.http.services.notification-service.loadbalancer.server.port=5102"
+    volumes:
+      - /app/logs
     networks:
       - financial-app-net
     depends_on:

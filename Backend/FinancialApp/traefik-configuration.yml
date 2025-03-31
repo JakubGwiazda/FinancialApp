@@ -1,0 +1,37 @@
+http:
+  middlewares:
+    addPrefix:
+      prefix: "/"
+  routers:
+    financial-app:
+      rule: "PathPrefix(`/financial`)"
+      service: financial-app
+      entrypoints: web
+      middlewares:
+        - add-auth-header
+    notification-service:
+      rule: "PathPrefix(`/notification`)"
+      service: notification-service
+      entrypoints: web
+      middlewares:
+        - add-auth-header
+    authorization-service:
+      rule: "PathPrefix(`/authorization`)"
+      service: authorization-service
+      entrypoints: web
+      middlewares:
+        - add-auth-header
+
+  services:
+    financial-app:
+      loadBalancer:
+        servers:
+          - url: "http://financial-app:5113"
+    notification-service:
+      loadBalancer:
+        servers:
+          - url: "http://notification-service:5102"
+    authorization-service:
+      loadBalancer:
+        servers:
+          - url: "http://authorization-service:5233"

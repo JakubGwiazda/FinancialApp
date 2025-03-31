@@ -1,7 +1,6 @@
 ﻿using AuthorizationService.Application.Commands;
 using AuthorizationService.Application.Queries;
 using FluentResults;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -34,7 +33,7 @@ namespace AuthorizationService.Controllers
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result<string>), Description = "Token was generated.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
         public async Task<Result<string>> RefreshToken()
-        {                     
+        {
             return await Mediator.Send(new GetNewTokenCmd() { User = User.FindFirstValue(JwtRegisteredClaimNames.Name) });
         }
     }
