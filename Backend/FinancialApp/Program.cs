@@ -1,6 +1,3 @@
-using FinancialApp.Infrastructure.Services;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
 using System.Text;
 
 
@@ -120,10 +116,5 @@ app.UseAuthorization();
 
 
 app.MapControllers();
-
-FirebaseApp.Create(new AppOptions()
-{
-    Credential = GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "firebasePrivateKey.json")),
-});
 
 app.Run();

@@ -27,7 +27,7 @@ public static class ConfigureServices
 
         FirebaseApp.Create(new AppOptions()
         {
-            Credential = GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "firebasePrivateKey.json")),
+            Credential = GoogleCredential.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "firebase_config.json")),
         });
 
         return services;

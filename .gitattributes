@@ -61,3 +61,9 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+appsettings.json filter=git-crypt diff=git-crypt
+appsettings.Development.json filter=git-crypt diff=git-crypt
+appsettings.Docker.json filter=git-crypt diff=git-crypt
+firebase_config.json filter=git-crypt diff=git-crypt
+.env filter=git-crypt diff=git-crypt
