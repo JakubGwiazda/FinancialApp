@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { getPriceChangesSuccess, getTrackedItems, getTrackedItemsSuccess } from './actions';
-import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
+import { getPriceChangesSuccess, getTrackedItemsSuccess } from './actions';
+import { ITrackedPairs } from '../pages/common/interfaces/ITrackedPairs';
 
 export interface IPriceChanges{
     cryptoName: string;

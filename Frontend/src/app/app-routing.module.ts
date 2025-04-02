@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { SettingsComponent } from './app-settings/settings.component';
-import { PopUpComponent } from './dashboard/Draggable/pop-up/pop-up.component';
-import { LoginPageComponent } from './login/login-page.component';
 import { RegisterAccountComponent } from './register-account/register-account.component';
-import { LayoutComponent } from './layout/layout.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginPageComponent } from './pages/login/login-page.component';
+import { LayoutComponent } from './pages/layout/layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TransactionsComponent } from './pages/transactions/transactions.component';
+import { SettingsComponent } from './pages/app-settings/settings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,9 +17,7 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'transaction', component: TransactionsComponent },
       { path: 'settings', component: SettingsComponent },
-      { path: 'popup', component: PopUpComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
     ],
     canActivate: [AuthGuard]

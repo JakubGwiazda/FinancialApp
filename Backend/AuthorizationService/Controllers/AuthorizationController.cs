@@ -32,6 +32,7 @@ namespace AuthorizationService.Controllers
         [HttpGet("refresh-token", Name = "refresh-token")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Result<string>), Description = "Token was generated.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, typeof(Result), Description = "Unauthorized access.")]
         public async Task<Result<string>> RefreshToken()
         {
             return await Mediator.Send(new GetNewTokenCmd() { User = User.FindFirstValue(JwtRegisteredClaimNames.Name) });

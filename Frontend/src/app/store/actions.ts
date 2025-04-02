@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { IPriceChanges } from './reducers';
-import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
+import { ITrackedPairs } from '../pages/common/interfaces/ITrackedPairs';
+import { TimePeriodEnum } from '../pages/common/enums/TimePeriodEnum';
 
 export const getTrackedItems = createAction('GetTrackedItems');
 
@@ -23,4 +23,7 @@ export const getPriceChangesSuccess = createAction(
     'GetPriceChangesSuccess',
     props<{ id: number, items: IPriceChanges }>()
   );
+
+  export const loadingDataFinished = createAction('LoadingDataFinished')
+
  

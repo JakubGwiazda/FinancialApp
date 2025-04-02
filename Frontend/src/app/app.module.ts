@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -9,8 +8,6 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { MenuComponent } from './menu/menu.component';
-import { TransactionsComponent } from './transactions/transactions.component';
 import { MatButtonModule } from '@angular/material/button';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { MatTableModule } from '@angular/material/table';
@@ -18,38 +15,41 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatHint } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
-import { TableSortingExampleComponent } from './table-sorting-example/table-sorting-example.component';
-import { UploadFileDirective } from './common/directives/upload-file.directive';
-import { SettingsComponent } from './app-settings/settings.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DynamicTableComponent } from './common/components/dynamic-table/dynamic-table.component';
-import { EditModalComponent } from './app-settings/tables/tracked-pair-table/modals/edit-modal/edit-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { SettingsTableComponent } from './app-settings/tables/settings-table/settings-table.component';
-import { TrackedPairTableComponent } from './app-settings/tables/tracked-pair-table/tracked-pair-table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { EditSettingModalComponent } from './app-settings/tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { DraggableWindowComponent } from './dashboard/Draggable/draggable-window/draggable-window.component';
 import { StoreModule } from '@ngrx/store';
 import { itemsReducer } from './store/reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { TrackerEffects } from './store/effects';
-import { SimpleCardComponent } from './common/components/simple-card/simple-card.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { ChartComponent } from './common/components/chart/chart.component';
 import environment from '../environments/enviroment.json';
 import environmentProd from '../environments/enviroment.prod.json';
 import { MatSelectModule } from '@angular/material/select';
 import { NotificationService } from './services/notifications/notification-service.service';
-import { DeleteModalComponent } from './app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
 import { BASE_PATH as FinancialApiBasePath } from 'crypto-api/model/financial';
 import { BASE_PATH as NotificationApiBasePath } from 'crypto-api/model/notification';
 import { BASE_PATH as AuthorizationApiBasePath } from 'crypto-api/model/authorization';
-import { LoginPageComponent } from './login/login-page.component';
 import { RegisterAccountComponent } from './register-account/register-account.component';
-import { LayoutComponent } from './layout/layout.component';
 import { AuthorizationInterceptor } from './interceptors/auth-interceptor.interceptor';
+import { MenuComponent } from './pages/menu/menu.component';
+import { TransactionsComponent } from './pages/transactions/transactions.component';
+import { TableSortingExampleComponent } from './pages/table-sorting-example/table-sorting-example.component';
+import { UploadFileDirective } from './pages/common/directives/upload-file.directive';
+import { SettingsComponent } from './pages/app-settings/settings.component';
+import { DynamicTableComponent } from './pages/common/components/dynamic-table/dynamic-table.component';
+import { EditModalComponent } from './pages/app-settings/tables/tracked-pair-table/modals/edit-modal/edit-modal.component';
+import { SettingsTableComponent } from './pages/app-settings/tables/settings-table/settings-table.component';
+import { TrackedPairTableComponent } from './pages/app-settings/tables/tracked-pair-table/tracked-pair-table.component';
+import { EditSettingModalComponent } from './pages/app-settings/tables/settings-table/modals/edit-setting-modal/edit-setting-modal.component';
+import { DeleteModalComponent } from './pages/app-settings/tables/tracked-pair-table/modals/delete-modal/delete-modal.component';
+import { LayoutComponent } from './pages/layout/layout.component';
+import { ChartComponent } from './pages/common/components/chart/chart.component';
+import { SimpleCardComponent } from './pages/common/components/simple-card/simple-card.component';
+import { LoginPageComponent } from './pages/login/login-page.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { LoaderComponent } from './pages/common/components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -66,10 +66,10 @@ import { AuthorizationInterceptor } from './interceptors/auth-interceptor.interc
     TrackedPairTableComponent,
     EditSettingModalComponent,
     DeleteModalComponent,
-    DraggableWindowComponent,
     LoginPageComponent,
     RegisterAccountComponent,
     LayoutComponent,
+    LoaderComponent
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -103,6 +103,7 @@ import { AuthorizationInterceptor } from './interceptors/auth-interceptor.interc
   providers: [
     NotificationService,
     provideHttpClient(withInterceptorsFromDi()),
+
     { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
     {
       provide: NotificationApiBasePath,
@@ -112,7 +113,22 @@ import { AuthorizationInterceptor } from './interceptors/auth-interceptor.interc
       provide: AuthorizationApiBasePath,
       useValue: environment.authorizationApiUrl,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true },
+
+    // { provide: FinancialApiBasePath, useValue: environmentProd.apiUrl },
+    // {
+    //   provide: NotificationApiBasePath,
+    //   useValue: environmentProd.apiUrl,
+    // },
+    // {
+    //   provide: AuthorizationApiBasePath,
+    //   useValue: environmentProd.apiUrl,
+    // },
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthorizationInterceptor,
+      multi: true,
+    },
   ],
 })
 export class AppModule {}

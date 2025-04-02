@@ -14,8 +14,9 @@ namespace FinancialApp.Controllers
     {
         [Authorize]
         [HttpPost("get-avg-prices", Name = "get-avg-prices")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<GetCryptoDataResponse>), Description = "The crypto information has been retrieved.")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Result<GetCryptoDataResponse>), Description = "Average crypto prices has been retrieved.")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(Result), Description = "Invalid request.")]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, typeof(Result), Description = "Unauthorized access.")]
         public async Task<Result<GetCryptoDataResponse>> TrackNewCrypto(GetCryptoDataQuery cmd)
         {
             return await Mediator.Send(cmd);

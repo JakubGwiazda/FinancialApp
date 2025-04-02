@@ -64,10 +64,11 @@ namespace FinancialApp.Infrastructure.Workers
                             await repository.SaveChangesAsync();
 
                             var lastResults = await repository.GetLastResults(record.Id, numberOfRecordsToCheck);
-                            
                             if (Math.Abs(CheckDifference(lastResults)) > notificationTriggeredLevel)
                             {
-                                var message = new MessageRequest() { Title = "Price changes!", Body = $"Pair: {symbol} changed price over setting limit" };
+                                var message = new MessageRequest() {
+                                    Title = "Price changes!",
+                                    Body = $"Pair: {symbol} changed price. Current: {Math.Round(lastResults.First().Price, 3)} - previous: {Math.Round(lastResults.Last().Price, 3)}" };
                                 _notificationProducer.PublishNotification(JsonSerializer.Serialize(message));
                             }
                         }
@@ -79,7 +80,7 @@ namespace FinancialApp.Infrastructure.Workers
                     }
                 }
                 
-                await Task.Delay(TimeSpan.FromSeconds(breakBetweenRequests), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(breakBetweenRequests), stoppingToken);
             }
 
         }

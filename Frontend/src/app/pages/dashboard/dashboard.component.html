@@ -1,0 +1,26 @@
+<div>
+  <mat-form-field class="ms-5 mt-2">
+    <mat-label>Choose data period</mat-label>
+    <mat-select [formControl]="selectedTimeRange">
+      <mat-option *ngFor="let period of timeRanges" [value]="period.Key">
+        {{ period.Value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="ms-5">
+    <h2>Price changes:</h2>
+    <app-loader [loading]="loadingData"></app-loader>
+    @if(charts.getValue().length === 0 && !loadingData) {
+      <div>Brak wyników do wyświetlenia</div>
+    }
+  </div>
+  <div  class="me-5 ms-5">
+    <app-simple-card *ngFor="let chart of charts | async"
+      [title]="chart.title"
+      [priceChange]="chart.priceChange"
+    >
+      <app-chart content [chartData]="chart.data"></app-chart>      
+    </app-simple-card>
+  </div>
+</div>

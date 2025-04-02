@@ -22,3 +22,6 @@ project(':capawesome-capacitor-background-task').projectDir = new File('../node_
 
 include ':jcesarmobile-ssl-skip'
 project(':jcesarmobile-ssl-skip').projectDir = new File('../node_modules/@jcesarmobile/ssl-skip/android')
+
+include ':capacitor-secure-storage-plugin'
+project(':capacitor-secure-storage-plugin').projectDir = new File('../node_modules/capacitor-secure-storage-plugin/android')

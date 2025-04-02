@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, filter, from, map, mergeMap, of } from 'rxjs';
+import { catchError, concatMap, exhaustMap, filter, from, map, mergeMap, of } from 'rxjs';
 import {
   getTrackedItems,
   getTrackedItemsSuccess,
   getTrackedItemsFailure,
   getPriceChanges,
   getPriceChangesSuccess,
+  loadingDataFinished,
 } from './actions';
-import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { IPriceChanges, IPriceInfo } from './reducers';
 import { CryptoDataService, SettingsService } from 'crypto-api/model/financial';
+import { ITrackedPairs } from '../pages/common/interfaces/ITrackedPairs';
 
 @Injectable()
 export class TrackerEffects {
