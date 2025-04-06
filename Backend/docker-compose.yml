@@ -7,10 +7,9 @@ services:
     restart: always
     command:
       - "--api.insecure=true"
-      - "--log.level=DEBUG"
+      - "--log.level=INFORMATION"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--providers.file.filename=/etc/traefik/traefik-configuration.yml"
       - "--entrypoints.web.address=:80"
       -  "--entrypoints.web.forwardedHeaders.trustedIPs=0.0.0.0/0"
     ports:
@@ -52,6 +51,12 @@ services:
       - "5433:5432"
     networks:
       - financial-app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d FinancialDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   notification-db:
     image: postgres:latest
@@ -67,6 +72,12 @@ services:
       - "5434:5432"
     networks:
       - financial-app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d NotificationDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   authorization-db:
     image: postgres:latest
@@ -82,6 +93,12 @@ services:
       - "5435:5432"
     networks:
       - financial-app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d AuthorizationDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   authorization-service:
     build:
@@ -95,6 +112,14 @@ services:
       - /app/logs
     networks:
       - financial-app-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authorization-service.rule=PathPrefix(`/authorization`)"
+      - "traefik.http.routers.authorization-service.entrypoints=web"
+      - "traefik.http.services.authorization-service.loadbalancer.server.port=5233"
+    depends_on:
+      authorization-db:
+        condition: service_healthy
 
   financial-app:
     build:
@@ -105,12 +130,21 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:5113
+      - DB_USER
+      - DB_PASSWORD
     volumes:
       - /app/logs
     networks:
       - financial-app-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.financial-app.rule=PathPrefix(`/financial`)"
+      - "traefik.http.routers.financial-app.entrypoints=web"
+      - "traefik.http.services.financial-app.loadbalancer.server.port=5113"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      financial-db:
         condition: service_healthy
 
   notification-service:
@@ -126,8 +160,15 @@ services:
       - /app/logs
     networks:
       - financial-app-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.notification-service.rule=PathPrefix(`/notification`)"
+      - "traefik.http.routers.notification-service.entrypoints=web"
+      - "traefik.http.services.notification-service.loadbalancer.server.port=5102"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      notification-db:
         condition: service_healthy
 
 networks:

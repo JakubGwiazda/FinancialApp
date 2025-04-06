@@ -10,7 +10,7 @@ namespace AuthorizationService.Application.Validators
         {
             RuleFor(x => x.User)
            .NotEmpty()
-           .Must(x => CheckUserName(x)).WithMessage("User name is incorrect.");
+           .Must(x => CheckUserName(x)).WithMessage("User name is incorrect.").WithErrorCode("401");
         }
 
         private bool CheckUserName(string userName)

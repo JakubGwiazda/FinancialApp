@@ -1,26 +1,27 @@
 http:
   middlewares:
-    addPrefix:
-      prefix: "/"
+  addPrefix:
+   addPrefix:
+    prefix: "/"
   routers:
     financial-app:
       rule: "PathPrefix(`/financial`)"
       service: financial-app
       entrypoints: web
       middlewares:
-        - add-auth-header
+        - addPrefix
     notification-service:
       rule: "PathPrefix(`/notification`)"
       service: notification-service
       entrypoints: web
       middlewares:
-        - add-auth-header
+        - addPrefix
     authorization-service:
       rule: "PathPrefix(`/authorization`)"
       service: authorization-service
       entrypoints: web
       middlewares:
-        - add-auth-header
+        - addPrefix
 
   services:
     financial-app:

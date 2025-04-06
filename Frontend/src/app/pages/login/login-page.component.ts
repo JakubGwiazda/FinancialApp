@@ -34,7 +34,6 @@ export class LoginPageComponent {
   }
 
   registerAccount(){
-    console.log('regisrter')
     this.router.navigate(['/register-account']);
   }
 

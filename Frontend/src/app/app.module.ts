@@ -104,25 +104,25 @@ import { LoaderComponent } from './pages/common/components/loader/loader.compone
     NotificationService,
     provideHttpClient(withInterceptorsFromDi()),
 
-    { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
-    {
-      provide: NotificationApiBasePath,
-      useValue: environment.notificationApiUrl,
-    },
-    {
-      provide: AuthorizationApiBasePath,
-      useValue: environment.authorizationApiUrl,
-    },
-
-    // { provide: FinancialApiBasePath, useValue: environmentProd.apiUrl },
+    // { provide: FinancialApiBasePath, useValue: environment.finanacialApiUrl },
     // {
     //   provide: NotificationApiBasePath,
-    //   useValue: environmentProd.apiUrl,
+    //   useValue: environment.notificationApiUrl,
     // },
     // {
     //   provide: AuthorizationApiBasePath,
-    //   useValue: environmentProd.apiUrl,
+    //   useValue: environment.authorizationApiUrl,
     // },
+
+    { provide: FinancialApiBasePath, useValue: environmentProd.apiUrl },
+    {
+      provide: NotificationApiBasePath,
+      useValue: environmentProd.apiUrl,
+    },
+    {
+      provide: AuthorizationApiBasePath,
+      useValue: environmentProd.apiUrl,
+    },
 
     {
       provide: HTTP_INTERCEPTORS,

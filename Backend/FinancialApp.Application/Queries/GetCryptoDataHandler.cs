@@ -45,6 +45,7 @@ namespace FinancialApp.Application.Queries
 
         public async Task<Result<GetCryptoDataResponse>> Handle(GetCryptoDataQuery query, CancellationToken cancellationToken)
         {
+            GetCryptoDataResponse response = new GetCryptoDataResponse();
             var records = await _repository.GetAvgPrices(query.TrackedPairId, query.TimePeriod);
             var priceInfo = records.Select(p => new PriceInfo()
             {
@@ -52,14 +53,16 @@ namespace FinancialApp.Application.Queries
                 Data = p.CreateDate
             }).OrderBy(p => p.Data).ToList();
 
-            var data = new GetCryptoDataResponse()
-            {
-                Name = records.First().Name,
-                PriceChange = CalculatePriceChange(priceInfo),
-                PriceData = priceInfo
-            };           
+            if(priceInfo.Count > 0) {
+                response = new GetCryptoDataResponse()
+                {
+                    Name = records.First().Name,
+                    PriceChange = CalculatePriceChange(priceInfo),
+                    PriceData = priceInfo
+                };
+            }       
 
-            return Result.Ok(data);
+            return Result.Ok(response);
         }
 
         private double CalculatePriceChange(List<PriceInfo> priceInfos) 

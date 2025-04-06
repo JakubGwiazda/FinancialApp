@@ -1,3 +1,5 @@
+using CryptoInfo.Infrastructure.Context;
+using FinancialApp.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
@@ -5,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Text;
 
 
@@ -16,7 +19,10 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
     .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilterAttribute>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(configuration =>
 {
@@ -87,7 +93,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -113,8 +119,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 app.MapControllers();
+
+MigrationManager.RunMigration(app.Services);
 
 app.Run();

@@ -1,3 +1,4 @@
+using AuthorizationService.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,10 @@ builder.Configuration
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilterAttribute>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -32,35 +36,6 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = context =>
-            {
-                
-                // Logowanie b³êdu autentykacji
-                Log.Warning("Authorization Header: " +context.Request.Headers.Authorization);
-                Log.Warning("Authentication failed: {Exception}", context.Exception.Message);
-
-                return Task.CompletedTask;
-            },
-            OnChallenge = context =>
-            {
-                // Logowanie braku tokenu w nag³ówkach
-                Log.Warning("Authorization Header: " + context.Request.Headers.Authorization);
-
-                Log.Warning("Authentication challenge triggered.");
-                return Task.CompletedTask;
-            },
-            OnTokenValidated = context =>
-            {
-                // Logowanie sukcesu walidacji tokenu
-                Log.Warning("Authorization Header: " + context.Request.Headers.Authorization);
-
-                Log.Information("Token validated successfully.");
-                return Task.CompletedTask;
-            }
-        };
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -112,5 +87,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+MigrationManager.RunMigration(app.Services);
 
 app.Run();

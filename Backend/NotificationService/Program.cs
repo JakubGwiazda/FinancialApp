@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
+using NotificationService.Filters;
 using NotificationService.Infrastructure.Services.RabbitMQ;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -19,7 +20,10 @@ builder.Logging
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilterAttribute>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(configuration =>
 {
@@ -128,4 +132,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
+
+MigrationManager.RunMigration(app.Services);
+
 app.Run();

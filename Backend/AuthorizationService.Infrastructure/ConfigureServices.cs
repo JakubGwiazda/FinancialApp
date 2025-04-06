@@ -5,6 +5,7 @@ using AuthorizationService.Infrastructure.Managers;
 using AuthorizationService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -20,4 +21,24 @@ public static class ConfigureServices
     }
 }
 
+public static class MigrationManager
+{
+    public static void RunMigration(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var db = services.GetRequiredService<BaseContext>();
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<BaseContext>>();
+            logger.LogError(ex, "Updating database failed.");
+            throw;
+        }
+    }
+}
 

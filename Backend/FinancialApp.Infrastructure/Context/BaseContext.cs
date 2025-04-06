@@ -20,13 +20,20 @@ namespace CryptoInfo.Infrastructure.Context
         public DbSet<CryptoData> CryptoData { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
         public DbSet<TrackedCryptocurrencies> TrackedCryptocurrencies { get; set; }
-        public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AppSettings>()
                 .Property(e => e.ValueType)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<CryptoData>()
+                .HasIndex(c => new { c.TrackedCryptocurrencyId, c.CreateDate })
+                .HasDatabaseName("IX_CryptoData_TrackedCryptoId_CreateDate");
+
+            modelBuilder.Entity<CryptoData>()
+                 .HasIndex(c => new { c.CreateDate })
+                 .HasDatabaseName("IX_CryptoData_CreateDate");
         }
     }
 }

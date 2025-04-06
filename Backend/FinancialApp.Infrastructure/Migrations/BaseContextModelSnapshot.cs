@@ -77,7 +77,11 @@ namespace FinancialApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TrackedCryptocurrencyId");
+                    b.HasIndex("CreateDate")
+                        .HasDatabaseName("IX_CryptoData_CreateDate");
+
+                    b.HasIndex("TrackedCryptocurrencyId", "CreateDate")
+                        .HasDatabaseName("IX_CryptoData_TrackedCryptoId_CreateDate");
 
                     b.ToTable("CryptoData");
                 });
@@ -104,33 +108,6 @@ namespace FinancialApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TrackedCryptocurrencies");
-                });
-
-            modelBuilder.Entity("FinancialApp.Domain.Users", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("FinancialApp.Domain.CryptoData", b =>

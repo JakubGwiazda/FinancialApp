@@ -15,6 +15,7 @@ import {
   filter,
   of,
   switchMap,
+  tap,
 } from 'rxjs';
 import { LineData } from 'lightweight-charts';
 import { Store } from '@ngrx/store';
@@ -22,10 +23,7 @@ import { ITrackedPairs } from '../common/interfaces/ITrackedPairs';
 import { TimePeriodEnum } from '../common/enums/TimePeriodEnum';
 import { FormControl } from '@angular/forms';
 import { AppState } from 'src/app/store/state';
-import {
-  getPriceChanges,
-  getTrackedItems,
-} from 'src/app/store/actions';
+import { getPriceChanges, getTrackedItems } from 'src/app/store/actions';
 import { getTrackedPairs, selectPriceChanges } from 'src/app/store/selectors';
 import { IPriceChanges } from 'src/app/store/reducers';
 
@@ -63,12 +61,11 @@ export class DashboardComponent implements OnInit {
     { Key: TimePeriodEnum.d30, Value: '30 Days' },
   ];
 
-  constructor(
-    private store: Store<AppState>,
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   async ngOnInit() {
     this.store.dispatch(getTrackedItems());
+
     await this.downloadChartsData(TimePeriodEnum.d6);
 
     this.selectedTimeRange.valueChanges
@@ -86,6 +83,11 @@ export class DashboardComponent implements OnInit {
     this.store
       .select(getTrackedPairs)
       .pipe(
+        tap((pairs) => {
+          if (pairs.length === 0) {
+            this.loadingData = false;
+          }
+        }),
         filter((pairs) => pairs.length > 0),
         switchMap((pairs) => {
           this.store.dispatch(

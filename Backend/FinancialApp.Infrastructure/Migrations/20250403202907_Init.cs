@@ -22,24 +22,10 @@ namespace FinancialApp.Infrastructure.Migrations
                     ValueType = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false)
-                },                
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppSettings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RegisteredDevices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Token = table.Column<string>(type: "text", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegisteredDevices", x => x.Id);
+                    table.PrimaryKey("PK_AppSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,9 +67,14 @@ namespace FinancialApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CryptoData_TrackedCryptocurrencyId",
+                name: "IX_CryptoData_CreateDate",
                 table: "CryptoData",
-                column: "TrackedCryptocurrencyId");
+                column: "CreateDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CryptoData_TrackedCryptoId_CreateDate",
+                table: "CryptoData",
+                columns: new[] { "TrackedCryptocurrencyId", "CreateDate" });
         }
 
         /// <inheritdoc />
@@ -94,9 +85,6 @@ namespace FinancialApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "CryptoData");
-
-            migrationBuilder.DropTable(
-                name: "RegisteredDevices");
 
             migrationBuilder.DropTable(
                 name: "TrackedCryptocurrencies");

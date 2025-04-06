@@ -2,6 +2,7 @@
 using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NotificationService.Application.Interfaces;
 using NotificationService.Infrastructure.Context;
 using NotificationService.Infrastructure.Repositories;
@@ -31,5 +32,26 @@ public static class ConfigureServices
         });
 
         return services;
+    }
+}
+
+public static class MigrationManager
+{
+    public static void RunMigration(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var db = services.GetRequiredService<BaseContext>();
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            var logger = services.GetRequiredService<ILogger<BaseContext>>();
+            logger.LogError(ex, "Updating database failed.");
+            throw;
+        }
     }
 }

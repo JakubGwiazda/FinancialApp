@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinancialApp.Infrastructure.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    [Migration("20250311213442_Init")]
+    [Migration("20250403202907_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -80,29 +80,13 @@ namespace FinancialApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TrackedCryptocurrencyId");
+                    b.HasIndex("CreateDate")
+                        .HasDatabaseName("IX_CryptoData_CreateDate");
+
+                    b.HasIndex("TrackedCryptocurrencyId", "CreateDate")
+                        .HasDatabaseName("IX_CryptoData_TrackedCryptoId_CreateDate");
 
                     b.ToTable("CryptoData");
-                });
-
-            modelBuilder.Entity("FinancialApp.Domain.RegisteredDevices", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RegisteredDevices");
                 });
 
             modelBuilder.Entity("FinancialApp.Domain.TrackedCryptocurrencies", b =>
