@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBF40AA1-DD87-4E16-AD6E-7E05480EC6A4}"
 	ProjectSection(SolutionItems) = preProject
 		..\.env = ..\.env
+		..\docker-compose-prod.yml = ..\docker-compose-prod.yml
 		..\docker-compose.yml = ..\docker-compose.yml
 		traefik-configuration.yml = traefik-configuration.yml
 	EndProjectSection

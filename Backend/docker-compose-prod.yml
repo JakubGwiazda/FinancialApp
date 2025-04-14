@@ -7,18 +7,19 @@ services:
     restart: always
     command:
       - "--api.insecure=true"
-      - "--log.level=INFORMATION"
+      - "--log.level=INFO"
+      - "--providers.file.directory=/dynamic"
+      - "--providers.file.watch=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.forwardedHeaders.trustedIPs=0.0.0.0/0"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
     ports:
-      - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
+      - "/home/certs:/home/certs"
+      - "/home/traefik-dynamic/:/dynamic"  
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-configuration.yml:/etc/traefik/traefik-configuration.yml"
     networks:
       - financial-app-net
 
@@ -27,8 +28,6 @@ services:
     hostname: "rabbitmq"
     labels:
       NAME: "rabbitmq"
-    ports:
-      - "5672:5672"
     networks:
       - financial-app-net
     healthcheck:
@@ -47,8 +46,6 @@ services:
       POSTGRES_DB: FinancialDb
     volumes:
       - financial_db_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
     networks:
       - financial-app-net
     healthcheck:
@@ -68,8 +65,6 @@ services:
       POSTGRES_DB: NotificationDB
     volumes:
       - notification_db_data:/var/lib/postgresql/data
-    ports:
-      - "5434:5432"
     networks:
       - financial-app-net
     healthcheck:
@@ -89,8 +84,6 @@ services:
       POSTGRES_DB: AuthorizationDB
     volumes:
       - authorization_db_data:/var/lib/postgresql/data
-    ports:
-      - "5435:5432"
     networks:
       - financial-app-net
     healthcheck:
@@ -101,9 +94,7 @@ services:
       start_period: 10s
 
   authorization-service:
-    build:
-      context: .
-      dockerfile: AuthorizationService/Dockerfile
+    image: aertis/authorization-service
     container_name: authorization-service
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
@@ -115,16 +106,19 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authorization-service.rule=PathPrefix(`/authorization`)"
-      - "traefik.http.routers.authorization-service.entrypoints=web"
+      - "traefik.http.routers.authorization-service.entrypoints=websecure"
+      - "traefik.http.routers.authorization-service.tls=true"
       - "traefik.http.services.authorization-service.loadbalancer.server.port=5233"
+      - "traefik.http.routers.authorization-service.middlewares=cors"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Origin=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Methods=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Headers=*"
     depends_on:
       authorization-db:
         condition: service_healthy
 
   financial-app:
-    build:
-      context: .
-      dockerfile: FinancialApp/Dockerfile
+    image: aertis/financial-app
     container_name: financial-app
     environment:
       - RABBITMQ_HOST=rabbitmq
@@ -139,8 +133,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.financial-app.rule=PathPrefix(`/financial`)"
-      - "traefik.http.routers.financial-app.entrypoints=web"
+      - "traefik.http.routers.financial-app.entrypoints=websecure"
+      - "traefik.http.routers.financial-app.tls=true"
       - "traefik.http.services.financial-app.loadbalancer.server.port=5113"
+      - "traefik.http.routers.financial-app.middlewares=cors"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Origin=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Methods=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Headers=*" 
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -148,9 +147,7 @@ services:
         condition: service_healthy
 
   notification-service:
-    build:
-      context: .
-      dockerfile: NotificationService/Dockerfile
+    image: aertis/notification-service
     container_name: notification-service
     environment:
       - RABBITMQ_HOST=rabbitmq
@@ -163,8 +160,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.notification-service.rule=PathPrefix(`/notification`)"
-      - "traefik.http.routers.notification-service.entrypoints=web"
+      - "traefik.http.routers.notification-service.entrypoints=websecure"
+      - "traefik.http.routers.notification-service.tls=true"
       - "traefik.http.services.notification-service.loadbalancer.server.port=5102"
+      - "traefik.http.routers.notification-service.middlewares=cors"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Origin=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Methods=*"
+      - "traefik.http.middlewares.cors.headers.customresponseheaders.Access-Control-Allow-Headers=*"   
     depends_on:
       rabbitmq:
         condition: service_healthy
