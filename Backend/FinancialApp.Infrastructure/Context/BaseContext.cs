@@ -20,6 +20,7 @@ namespace CryptoInfo.Infrastructure.Context
         public DbSet<CryptoData> CryptoData { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
         public DbSet<TrackedCryptocurrencies> TrackedCryptocurrencies { get; set; }
+        public DbSet<OperationLogs> OperationLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,9 @@ namespace CryptoInfo.Infrastructure.Context
             modelBuilder.Entity<CryptoData>()
                  .HasIndex(c => new { c.CreateDate })
                  .HasDatabaseName("IX_CryptoData_CreateDate");
+
+            modelBuilder.Entity<OperationLogs>()
+                 .Property(p => p.LogType).HasConversion<string>();
         }
     }
 }

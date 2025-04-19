@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.env = ..\.env
 		..\docker-compose-prod.yml = ..\docker-compose-prod.yml
 		..\docker-compose.yml = ..\docker-compose.yml
-		traefik-configuration.yml = traefik-configuration.yml
+		traefik-config.yml = traefik-config.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthorizationService", "AuthorizationService", "{E32F65B4-DD43-4548-A8BD-B11B98FFA87D}"

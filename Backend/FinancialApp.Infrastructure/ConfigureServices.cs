@@ -16,14 +16,14 @@ public static class ConfigurationServices
     {
         services.AddScoped<ICryptoCurrenciesSettingsRepository, CryptoCurrenciesSettingsRepository>();
         services.AddScoped<ICryptoDataRepository, CryptoDataRepository>();
-
+        services.AddScoped<ILogService, LogService>();
         services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>(sp =>
         {
             return RabbitMQProducer.CreateAsync(configuration).GetAwaiter().GetResult();
         });
 
         services.AddDbContext<BaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("FinancialDatabase")));
-
+        
         services.AddHostedService<RequestWorker>();
 
         return services;    
